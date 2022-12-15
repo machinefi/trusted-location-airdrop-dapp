@@ -20,9 +20,12 @@ export const Home = ({ airdrops }: Homeprops) => {
                             color: 'white'
                         }}
                         boxShadow='inner'
-                        >
+                    >
                         <CardHeader>
-                            <Heading size='md'>Air Drop</Heading>
+                            <Heading
+                                size='md'
+                                as='b'
+                            >Air Drop</Heading>
                         </CardHeader>
                         <CardBody>
                             <Box>

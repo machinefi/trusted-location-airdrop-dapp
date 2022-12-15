@@ -13,7 +13,7 @@ export default function MyDrops({ airdrops }: Homeprops) {
             <Center>
                 <Text
                     fontSize='4xl'
-                    mb={6}
+                    mb={12}
                     bgGradient='linear(to-l, #7928CA, #FF0080)'
                     bgClip='text'
                     as='b'
