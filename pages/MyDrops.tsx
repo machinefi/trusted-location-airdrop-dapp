@@ -1,13 +1,13 @@
 import { Text, Center } from '@chakra-ui/react'
-import { airdrops } from "../airdrops";
+import { myAirdrops } from "../airdrops";
 import { Airdrop } from "../types/Airdrop";
 import { Home } from "../containers/Home";
 
 interface Homeprops {
-    airdrops: Airdrop[]
+    myAirdrops: Airdrop[]
 }
 
-export default function MyDrops({ airdrops }: Homeprops) {
+export default function MyDrops({ myAirdrops }: Homeprops) {
     return (
         <div>
             <Center>
@@ -21,7 +21,7 @@ export default function MyDrops({ airdrops }: Homeprops) {
                     My Airdrops</Text>
             </Center>
 
-            <Home airdrops={airdrops} />
+            <Home airdrops={myAirdrops} />
         </div>
     )
 }
@@ -29,7 +29,7 @@ export default function MyDrops({ airdrops }: Homeprops) {
 export function getStaticProps() { // run server side 
     return {
         props: {
-            airdrops
+            myAirdrops
         }
     }
 }

@@ -1,28 +1,54 @@
 import Link from "next/link";
-import { Flex } from "@chakra-ui/react"
-import { Text } from '@chakra-ui/react'
+import { Flex, Text, Box } from "@chakra-ui/react"
 import { Button } from '@chakra-ui/react'
+import { useAccount, useConnect, useEnsName } from 'wagmi'
+import { InjectedConnector } from 'wagmi/connectors/injected'
 
 export const Navbar = () => {
-    return (
-        <Flex align="space-between" justify="end" gap={6} m={12}>
-            <Text as='b'><Link href="/">Home</Link></Text>
-            <Text as='b'><Link href="/MyDrops">My Drops</Link></Text>
-            <Text as='b'><Link href="/Create">Create</Link></Text>
-            <Button
-                size='xs'
-                as='button'
-                color='white'
-                fontWeight='bold'
-                borderRadius='md'
-                bgGradient='linear(to-l, #7928CA, #FF0080)'
-                _hover={{
-                    bgGradient: 'linear(to-r, red.500, yellow.500)',
-                }}
+    const { address, isConnected } = useAccount()
+    const { data: ensName } = useEnsName({ address })
+    const { connect } = useConnect({
+        connector: new InjectedConnector(),
+    })
 
-            >
-                Connect
-            </Button>
-        </Flex>
+    return (
+        <div>
+            {
+                isConnected
+                    ?
+                    <Flex align="space-between" justify="end" gap={6} m={12}>
+                        <Text as='b'><Link href="/">Home</Link></Text>
+                        <Text as='b'><Link href="/myDrops">My Drops</Link></Text>
+                        <Text as='b'><Link href="/create">Create</Link></Text>
+                        <Text
+                            bgGradient='linear(to-l, #7928CA, #FF0080)'
+                            bgClip='text'
+                            as='b'
+                        >{ensName ?? address?.substring(0, 5)}..{address?.substring(address.length-2)}</Text>
+                    </Flex>
+                    :
+                    <Flex align="space-between" justify="end" gap={6} m={12}>
+                        <Text as='b'><Link href="/">Home</Link></Text>
+                        <Text as='b'><Link href="/myDrops">My Drops</Link></Text>
+                        <Text as='b'><Link href="/create">Create</Link></Text>
+                        <Button
+                            size='xs'
+                            as='button'
+                            color='white'
+                            fontWeight='bold'
+                            borderRadius='md'
+                            bgGradient='linear(to-l, #7928CA, #FF0080)'
+                            _hover={{
+                                bgGradient: 'linear(to-r, red.500, yellow.500)',
+                            }}
+                            onClick={() => connect()}
+
+                        >
+                            Connect
+                        </Button>
+                    </Flex>
+
+            }
+        </div>
     )
 }
