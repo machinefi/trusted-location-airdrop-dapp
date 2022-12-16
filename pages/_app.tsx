@@ -1,15 +1,18 @@
+import { WagmiConfig } from 'wagmi'
 import { ChakraProvider } from '@chakra-ui/react'
-import { Box, Flex } from "@chakra-ui/react"
-import Link from "next/link";
+import wagmiClient from "../wagmiClient"
 import { Layout } from "../containers/Layout/Layout";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <ChakraProvider>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </ChakraProvider>
+    <WagmiConfig client={wagmiClient}>
+      <ChakraProvider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </ChakraProvider>
+    </WagmiConfig>
+
   )
 }
 

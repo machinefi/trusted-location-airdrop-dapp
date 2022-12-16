@@ -39,7 +39,7 @@ export default function Create() {
 
                 <FormLabel>Tokens Count</FormLabel>
                 <Input type='number' placeholder='7' />
-                <FormHelperText mb={6} >Specify how many tokens you'd like to create</FormHelperText>
+                <FormHelperText mb={6} >Specify how many tokens you would like to create</FormHelperText>
 
                 <Button
                     size='xs'
