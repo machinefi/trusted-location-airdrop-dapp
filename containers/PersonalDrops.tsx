@@ -6,7 +6,7 @@ interface Homeprops {
     airdrops: Airdrop[]
 }
 
-export const Home = ({ airdrops }: Homeprops) => {
+export const PersonalDrops = ({ airdrops }: Homeprops) => {
 
     return (
         <Grid templateColumns='repeat(3, 1fr)' gap={6}>
@@ -35,22 +35,6 @@ export const Home = ({ airdrops }: Homeprops) => {
                                 <Text pt='2' fontSize='sm' noOfLines={3}>
                                     {airdrop.description}
                                 </Text>
-                                <Button
-                                    size='xs'
-                                    as='button'
-                                    color='white'
-                                    fontWeight='bold'
-                                    borderRadius='md'
-                                    bgGradient='linear(to-l, #7928CA, #FF0080)'
-                                    _hover={{
-                                        background: 'white',
-                                        color: 'black'
-                                    }}
-                                    mt={12}
-
-                                >
-                                    Claim
-                                </Button>
                             </Box>
                         </CardBody>
 
@@ -60,5 +44,3 @@ export const Home = ({ airdrops }: Homeprops) => {
         </Grid>
     )
 }
-
-

@@ -7,19 +7,25 @@
 const hre = require("hardhat");
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-  const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS;
-
-  const lockedAmount = hre.ethers.utils.parseEther("1");
-
-  const Lock = await hre.ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
-
-  await lock.deployed();
-
+  const VerifierInterface = await hre.ethers.getContractFactory("VerifierInterface");
+  const verifierInterface = await VerifierInterface.deploy();
+  await verifierInterface.deployed();
   console.log(
-    `Lock with 1 ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
+    `Verifier interface deployed at ${verifierInterface.address}`
+  );
+
+  const LocationNFT = await hre.ethers.getContractFactory("LocationNFT");
+  const locationNFT = await LocationNFT.deploy();
+  await locationNFT.deployed();
+  console.log(
+    `Location NFT contract deployed at ${locationNFT.address}`
+  );
+
+  const Logic = await hre.ethers.getContractFactory("Logic");
+  const logic = await Logic.deploy(verifierInterface.address, locationNFT.address);
+  await logic.deployed();
+  console.log(
+    `Logic contract deployed at ${logic.address}`
   );
 }
 

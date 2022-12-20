@@ -1,7 +1,7 @@
-import { Text, Center } from '@chakra-ui/react'
+import { Text, Center, Card, CardBody } from '@chakra-ui/react'
 import { myAirdrops } from "../airdrops";
 import { Airdrop } from "../types/Airdrop";
-import { Home } from "../containers/Home";
+import { PersonalDrops } from '../containers/PersonalDrops';
 
 interface Homeprops {
     myAirdrops: Airdrop[]
@@ -10,23 +10,50 @@ interface Homeprops {
 export default function MyDrops({ myAirdrops }: Homeprops) {
     return (
         <div>
-            <Center>
-                <Text
-                    fontSize='4xl'
-                    mb={12}
-                    bgGradient='linear(to-l, #7928CA, #FF0080)'
-                    bgClip='text'
-                    as='b'
-                >
-                    My Airdrops</Text>
-            </Center>
+            {
+                myAirdrops.length > 0
+                    ?
+                    <div>
+                        <Center>
+                            <Text
+                                fontSize='4xl'
+                                mb={12}
+                                bgGradient='linear(to-l, #7928CA, #FF0080)'
+                                bgClip='text'
+                                as='b'
+                            >
+                                My Airdrops</Text>
+                        </Center>
+                        <PersonalDrops airdrops={myAirdrops} />
+                    </div>
+                    :
+                    <div>
+                        <Center>
+                            <Card
+                                bgGradient='linear(to-l, #7928CA, #FF0080)'
+                                align='center'
+                                mt={24}
+                            >
+                                <CardBody>
+                                    <Text
 
-            <Home airdrops={myAirdrops} />
+                                        fontSize='2xl'
+                                        color='white'
+                                        as='b'
+                                    >You don't have any Airdrops yet</Text>
+                                </CardBody>
+                            </Card>
+
+                        </Center>
+                    </div>
+
+            }
+
         </div>
     )
 }
 
-export function getStaticProps() { // run server side 
+export function getStaticProps() {
     return {
         props: {
             myAirdrops
