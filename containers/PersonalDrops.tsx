@@ -1,5 +1,5 @@
 import { Airdrop } from "../types/Airdrop";
-import { Card, CardHeader, CardBody, Heading, Box, Text, Button, color } from '@chakra-ui/react'
+import { Card, CardHeader, CardBody, Heading, Box, Text, Center } from '@chakra-ui/react'
 import { Grid } from '@chakra-ui/react'
 
 interface Homeprops {
@@ -25,7 +25,11 @@ export const PersonalDrops = ({ airdrops }: Homeprops) => {
                             <Heading
                                 size='md'
                                 as='b'
-                            >Air Drop</Heading>
+                            >
+                                <Center>
+                                    Air Drop {airdrop.id}
+                                </Center>
+                            </Heading>
                         </CardHeader>
                         <CardBody>
                             <Box>

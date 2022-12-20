@@ -7,12 +7,14 @@
 const hre = require("hardhat");
 
 async function main() {
-  const VerifierInterface = await hre.ethers.getContractFactory("VerifierInterface");
-  const verifierInterface = await VerifierInterface.deploy();
-  await verifierInterface.deployed();
-  console.log(
-    `Verifier interface deployed at ${verifierInterface.address}`
-  );
+  const accounts = await hre.ethers.getSigners();
+  // VERIFIER CONTRACT ADDRESS ?? 
+  // const VerifierInterface = await hre.ethers.getContractAt("VerifierInterface");
+  // const verifierInterface = await VerifierInterface.deploy();
+  // await verifierInterface.deployed();
+  // console.log(
+  //   `Verifier interface deployed at ${verifierInterface.address}`
+  // );
 
   const LocationNFT = await hre.ethers.getContractFactory("LocationNFT");
   const locationNFT = await LocationNFT.deploy();
@@ -27,6 +29,11 @@ async function main() {
   console.log(
     `Logic contract deployed at ${logic.address}`
   );
+
+  // DOUBLE CHECK IF THIS IS CORRECT 
+  const airdrop = await logic.addAirDrop(1245, 1158, 200, 16598888451, 16598899999, 6, {from: accounts[0]} )
+  console.log("airdrop", airdrop)
+
 }
 
 // We recommend this pattern to be able to use async/await everywhere

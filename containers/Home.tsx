@@ -1,5 +1,5 @@
 import { Airdrop } from "../types/Airdrop";
-import { Card, CardHeader, CardBody, Heading, Box, Text, Button, color } from '@chakra-ui/react'
+import { Card, CardHeader, CardBody, Heading, Box, Text, Button, Center } from '@chakra-ui/react'
 import { Grid } from '@chakra-ui/react'
 
 interface Homeprops {
@@ -25,32 +25,42 @@ export const Home = ({ airdrops }: Homeprops) => {
                             <Heading
                                 size='md'
                                 as='b'
-                            >Air Drop</Heading>
+                            >
+                                <Center>
+                                    Air Drop {airdrop.id}
+                                </Center>
+                            </Heading>
                         </CardHeader>
                         <CardBody>
                             <Box>
                                 <Heading size='xs' textTransform='uppercase'>
+
                                     {airdrop.title}
                                 </Heading>
+
                                 <Text pt='2' fontSize='sm' noOfLines={3}>
                                     {airdrop.description}
                                 </Text>
-                                <Button
-                                    size='xs'
-                                    as='button'
-                                    color='white'
-                                    fontWeight='bold'
-                                    borderRadius='md'
-                                    bgGradient='linear(to-l, #7928CA, #FF0080)'
-                                    _hover={{
-                                        background: 'white',
-                                        color: 'black'
-                                    }}
-                                    mt={12}
+                                <Center>
+                                    <Button
+                                        size='xs'
+                                        as='button'
+                                        color='white'
+                                        fontWeight='bold'
+                                        borderRadius='md'
+                                        border='1px'
+                                        borderColor='white'
+                                        bgGradient='linear(to-l, #7928CA, #FF0080)'
+                                        _hover={{
+                                            bgGradient: 'linear(red.100 0%, orange.100 25%, yellow.100 50%)',
+                                            color: 'black'
+                                        }}
+                                        mt={12}
+                                    >
+                                        Claim
+                                    </Button>
+                                </Center>
 
-                                >
-                                    Claim
-                                </Button>
                             </Box>
                         </CardBody>
 
