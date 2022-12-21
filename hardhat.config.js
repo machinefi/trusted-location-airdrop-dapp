@@ -11,14 +11,14 @@ module.exports = {
     hardhat: {
       gas: 8500000,
     },
-    // testnet: {
-    //   // These are the official IoTeX endpoints to be used by Ethereum clients
-    //   // Testnet https://babel-api.testnet.iotex.io
-    //   // Mainnet https://babel-api.mainnet.iotex.io
-    //   url: `https://babel-api.testnet.iotex.io`,
+    testnet: {
+      // These are the official IoTeX endpoints to be used by Ethereum clients
+      // Testnet https://babel-api.testnet.iotex.io
+      // Mainnet https://babel-api.mainnet.iotex.io
+      url: `https://babel-api.testnet.iotex.io`,
  
-    //   // Input your Metamask testnet account private key here
-    //   accounts: [`${IOTEX_PRIVATE_KEY}`],
-    // },
+      // Input your Metamask testnet account private key here
+      accounts: [`${IOTEX_PRIVATE_KEY}`],
+    },
   },
 };

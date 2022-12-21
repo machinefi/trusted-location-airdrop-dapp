@@ -19,14 +19,16 @@ import LogicContract from "../artifacts/contracts/Logic.sol/Logic.json"
 export default function Create() {
 
     const [tokens, setTokens] = useState(0);
-    const { data: calculateFeeResult, isError, isLoading } = useContractRead({
+    const contractRead = useContractRead({
         address: LogicContractAddress,
         abi: LogicContract.abi,
         functionName: 'calculateFee',
         args: [tokens]
     })
 
-    
+    useEffect(()=> {
+        console.log("feeResult", contractRead)
+    }, [])
 
     const router = useRouter();
 
@@ -63,7 +65,8 @@ export default function Create() {
         const timeTo = _formatDate(time_to);
 
         // get fee
-        console.log(calculateFeeResult, "feeResult")
+        const data = await contractRead.data
+        console.log("data", data)
 
         // call the contract with formInput && postingFee
 
@@ -85,11 +88,11 @@ export default function Create() {
 
             <FormControl isRequired>
                 <FormLabel>Latitude</FormLabel>
-                <Input type='number' mb={4} placeholder='-41.123456' onChange={(e) => setFormInput({ ...formInput, lat: e.target.value })} />
-
+                <Input type='number' placeholder='-41.123456' onChange={(e) => setFormInput({ ...formInput, lat: e.target.value })} />
+                <FormHelperText mb={6} >Enter a value between -90 and 90</FormHelperText>
                 <FormLabel>Longitude</FormLabel>
-                <Input type='number' mb={4} placeholder='-12.123456' onChange={(e) => setFormInput({ ...formInput, long: e.target.value })} />
-
+                <Input type='number' placeholder='-12.123456' onChange={(e) => setFormInput({ ...formInput, long: e.target.value })} />
+                <FormHelperText mb={6} >Enter a value between -180 and 180</FormHelperText>
                 <FormLabel>Max Distance (meters)</FormLabel>
                 <Input type='number' mb={4} placeholder='200' onChange={(e) => setFormInput({ ...formInput, max_distance: e.target.value })} />
 
@@ -104,7 +107,7 @@ export default function Create() {
                     setFormInput({ ...formInput, tokens_count: e.target.value })
                     setTokens(Number(e.target.value))
                 }} />
-                <FormHelperText mb={6} >Specify how many tokens you would like to create</FormHelperText>
+                <FormHelperText mb={6} >Specify how many tokens you would like to create for this Airdrop</FormHelperText>
 
                 <Button
                     size='xs'

@@ -1,0 +1,18 @@
+const cliff = await logic.setFeeCliff(45) 
+const _myFee4 = await logic.calculateFee(5)
+const _myFee3 = await logic.calculateFee(5)
+const _myFee3 = await logic.calculateFee("3")
+const _myFee2 = await logic.calculateFee()
+const _myFee = await logic.calculateFee()
+const _myFee = await logic.calculateFee(20)
+console.log(_fee)
+const _fee = await logic.functions
+console.log(logic)
+const fee = await logic.calculateFee(5)
+console.log(logic)
+const logic = await hre.ethers.getContractAt("Logic", 0xBad6b3CEF69D8cd004A1380A365da1c20151723B) 
+const Logic = await hre.ethers.getContractAt("Logic", 0xBad6b3CEF69D8cd004A1380A365da1c20151723B) 
+const Logic = await hre.ethers.getContract(0xBad6b3CEF69D8cd004A1380A365da1c20151723B) 
+ethers
+.editor
+.help

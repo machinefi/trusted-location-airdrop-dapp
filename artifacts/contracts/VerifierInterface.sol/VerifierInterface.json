@@ -68,11 +68,6 @@
           "internalType": "bytes32",
           "name": "deviceHash",
           "type": "bytes32"
-        },
-        {
-          "internalType": "bytes32",
-          "name": "device_IMEI",
-          "type": "bytes32"
         }
       ],
       "name": "generateLocationDistanceDigest",

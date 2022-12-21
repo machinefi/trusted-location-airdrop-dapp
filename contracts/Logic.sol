@@ -8,7 +8,7 @@ import "./VerifierInterface.sol";
 
 contract Logic is Ownable, ReentrancyGuard {
 
-    event Claimed(address indexed holder, bytes32 indexed deviceHash, uint256 indexed tokenId);
+    event Claimed(address indexed holder, bytes32 indexed deviceHash);
 
     VerifierInterface public verifier;
     LocationNFT public NFT;
@@ -26,7 +26,6 @@ contract Logic is Ownable, ReentrancyGuard {
     }
 
     struct AirDrop {
-        uint tokenId;
         int256 lat;
         int256 long;
         uint256 maxDistance;
@@ -38,7 +37,7 @@ contract Logic is Ownable, ReentrancyGuard {
 
     bytes32[] public airDropsHashes;
     mapping(bytes32 => AirDrop) public airDrops;
-    mapping(address => mapping(bytes32 => bool)) claimedAirDrops; 
+    mapping(address => mapping(bytes32 => bool)) public claimedAirDrops; 
 
     uint256 private _tokenId;
 
@@ -58,11 +57,13 @@ contract Logic is Ownable, ReentrancyGuard {
         uint _time_to, 
         uint _tokens_count
     ) external payable { 
+        require(_lat >= -90 && _lat <= 90, "Invalid latitude value");
+        require(_long <= -180 && _long <= 180, "Invalid longitude value");
         require(_maxDistance > 0, "Invalid max distance");
-        require(msg.value >= calculateFee(_tokens_count), "Fee is not sufficient based on the tokens count");
+        require(msg.value >= calculateFee(_tokens_count), "Value sent with tx is not sufficient based on the tokens count");
         bytes32 airDropHash = generateHash(_lat, _long, _maxDistance, _time_from, _time_to);
         require(airDrops[airDropHash].maxDistance == 0, "Duplicated airDrop"); 
-        airDrops[airDropHash] = AirDrop({tokenId: _tokenId, lat: _lat, long: _long, maxDistance: _maxDistance, time_from: _time_from, time_to: _time_to, tokens_count: _tokens_count, tokens_minted: 0});
+        airDrops[airDropHash] = AirDrop({lat: _lat, long: _long, maxDistance: _maxDistance, time_from: _time_from, time_to: _time_to, tokens_count: _tokens_count, tokens_minted: 0});
         airDropsHashes.push(airDropHash);
         _tokenId++;
     }
@@ -105,7 +106,7 @@ contract Logic is Ownable, ReentrancyGuard {
         NFT.safeMint(msg.sender); 
 
         // emit the event
-        emit Claimed(msg.sender, airDropHash, airDrop.tokenId);
+        emit Claimed(msg.sender, airDropHash);
 
         // update the number of tokens minted for this airdrop
         airDrop.tokens_minted++;
