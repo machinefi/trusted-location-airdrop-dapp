@@ -13,9 +13,9 @@ contract Logic is Ownable, ReentrancyGuard {
     VerifierInterface public verifier;
     LocationNFT public NFT;
 
-    address feeReceiver;
-    uint baseFee;
-    uint feeCliff; // value after which creating more tokens will be free
+    address public feeReceiver;
+    uint public baseFee;
+    uint public feeCliff; // value after which creating more tokens will be free
 
     constructor(address _verifier, address _nft, uint _baseFee, address _feeReceiver, uint _feeCliff)  {
         verifier = VerifierInterface(_verifier);
@@ -120,11 +120,8 @@ contract Logic is Ownable, ReentrancyGuard {
         feeCliff = cliff;
     }
 
-    function calculateFee(uint _tokens_count) public view returns (uint _postingFee) {
-        if (_tokens_count >= feeCliff) {
-            _postingFee = baseFee * feeCliff;
-        } else {
-            _postingFee = baseFee * _tokens_count;
-        }
+    function calculateFee(uint _tokens_count) public view returns (uint) {
+        uint returnFee = _tokens_count * baseFee;
+        return returnFee;
     }
 }

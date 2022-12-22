@@ -8,7 +8,7 @@ const hre = require("hardhat");
 
 async function main() {
   const accounts = await hre.ethers.getSigners();
-  
+
   // ADD VERIFIER CONTRACT ADDRESS 
   const verifierAddress = "0xB9ae925fF8318915e3266e0EA41a37408033caC6"
 
@@ -20,16 +20,11 @@ async function main() {
   );
 
   const Logic = await hre.ethers.getContractFactory("Logic");
-  const logic = await Logic.deploy(verifierAddress, locationNFT.address, 1000, accounts[0].address, 100 );
+  const logic = await Logic.deploy(verifierAddress, locationNFT.address, 10, accounts[0].address, 10);
   await logic.deployed();
   console.log(
     `Logic contract deployed at ${logic.address}`
   );
-
-  // // DOUBLE CHECK IF THIS IS CORRECT 
-  // const fee = await logic.calculateFee(6);
-  // const airdrop = await logic.addAirDrop(1245, 1158, 200, 16598888451, 16598899999, 6, { from: accounts[0], value: fee })
-  // console.log("airdrop", airdrop)
 
 }
 

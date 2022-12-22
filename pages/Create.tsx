@@ -23,11 +23,17 @@ export default function Create() {
         address: LogicContractAddress,
         abi: LogicContract.abi,
         functionName: 'calculateFee',
-        args: [tokens]
+        args: [1],
+        chainId: 4690,
+        onError: ((error)=> {
+            console.log("read-hook error", error)
+            console.log("tokens", tokens)
+        })
     })
 
     useEffect(()=> {
         console.log("feeResult", contractRead)
+        console.log("logic abi", LogicContract.abi)
     }, [])
 
     const router = useRouter();
