@@ -5,13 +5,10 @@ import {
     Input
 } from '@chakra-ui/react'
 import { Text, Button, Center } from '@chakra-ui/react'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from "next/router";
-import { useDebounce } from 'use-debounce'
-import { usePrepareSendTransaction, useContractRead } from 'wagmi'
-import { utils } from 'ethers'
-import { LocationNFTAddress, LogicContractAddress } from "../config/addresses"
-import LocationNFT from "../artifacts/contracts/LocationNFT.sol/LocationNFT.json";
+import { useContractRead } from 'wagmi'
+import { LogicContractAddress } from "../config/addresses"
 import LogicContract from "../artifacts/contracts/Logic.sol/Logic.json"
 
 
@@ -19,22 +16,12 @@ import LogicContract from "../artifacts/contracts/Logic.sol/Logic.json"
 export default function Create() {
 
     const [tokens, setTokens] = useState(0);
-    const contractRead = useContractRead({
+    const {data: calculateFeeResult} = useContractRead({
         address: LogicContractAddress,
         abi: LogicContract.abi,
         functionName: 'calculateFee',
-        args: [1],
-        chainId: 4690,
-        onError: ((error)=> {
-            console.log("read-hook error", error)
-            console.log("tokens", tokens)
-        })
+        args: [tokens],
     })
-
-    useEffect(()=> {
-        console.log("feeResult", contractRead)
-        console.log("logic abi", LogicContract.abi)
-    }, [])
 
     const router = useRouter();
 
@@ -71,7 +58,7 @@ export default function Create() {
         const timeTo = _formatDate(time_to);
 
         // get fee
-        const data = await contractRead.data
+        const data = calculateFeeResult;
         console.log("data", data)
 
         // call the contract with formInput && postingFee
