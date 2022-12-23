@@ -40,7 +40,7 @@ export default function MyDrops({ myAirdrops }: Homeprops) {
                                         fontSize='2xl'
                                         color='white'
                                         as='b'
-                                    >You don't have any Airdrops yet</Text>
+                                    >You don&apos;t have any Airdrops yet</Text>
                                 </CardBody>
                             </Card>
 
