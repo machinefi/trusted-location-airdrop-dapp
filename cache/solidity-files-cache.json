@@ -517,8 +517,8 @@
       ]
     },
     "/Users/laurentwo/Desktop/geostream/geo_next/contracts/Logic.sol": {
-      "lastModificationDate": 1672088390060,
-      "contentHash": "aa2e80186342e6f070309aab3334970b",
+      "lastModificationDate": 1672092357151,
+      "contentHash": "fa2ed2b2913d49b6a66ee75a22b7a09b",
       "sourceName": "contracts/Logic.sol",
       "solcConfig": {
         "version": "0.8.17",

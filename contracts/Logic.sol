@@ -121,7 +121,13 @@ contract Logic is Ownable, ReentrancyGuard {
     }
 
     function calculateFee(uint _tokens_count) public view returns (uint) {
-        uint returnFee = _tokens_count * baseFee;
+        uint returnFee;
+
+        if (_tokens_count >= feeCliff) {
+            returnFee = feeCliff * baseFee;
+        } else {
+            returnFee = _tokens_count * baseFee;
+        }
         return returnFee;
     }
 }

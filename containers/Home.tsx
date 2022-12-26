@@ -8,6 +8,12 @@ interface Homeprops {
 
 export const Home = ({ airdrops }: Homeprops) => {
 
+    // format the coordinates received from the contract
+    function scaleCoordinatesDown(coordInput: number) { 
+        const result = coordInput / Math.pow(10, 6)
+        return result
+    }
+
     return (
         <Grid templateColumns='repeat(3, 1fr)' gap={6}>
             {

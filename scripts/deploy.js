@@ -25,7 +25,6 @@ async function main() {
   console.log(
     `Logic contract deployed at ${logic.address}`
   );
-
 }
 
 // We recommend this pattern to be able to use async/await everywhere

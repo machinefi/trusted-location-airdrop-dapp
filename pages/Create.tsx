@@ -7,7 +7,7 @@ import {
 import { Text, Button, Center } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useRouter } from "next/router";
-import { useContractRead } from 'wagmi'
+import { useContractReads } from 'wagmi'
 import { LogicContractAddress } from "../config/addresses"
 import LogicContract from "../artifacts/contracts/Logic.sol/Logic.json"
 
@@ -16,18 +16,28 @@ import LogicContract from "../artifacts/contracts/Logic.sol/Logic.json"
 export default function Create() {
 
     const [tokens, setTokens] = useState(0);
-    const {data: calculateFeeResult} = useContractRead({
+
+    const logicContract = {
         address: LogicContractAddress,
         abi: LogicContract.abi,
-        functionName: 'calculateFee',
-        args: [3],
+    }
+
+    const { data: airdropFee } = useContractReads({
+        contracts: [
+            {
+                ...logicContract,
+                functionName: "calculateFee",
+                args: [tokens],
+                chainId: 4690,
+            }
+        ]
     })
 
     const router = useRouter();
 
-    useEffect(()=> {
-        console.log("feeResult", calculateFeeResult)
-    }, [] )
+    useEffect(() => {
+        console.log("feeResult", airdropFee?.toString())
+    }, [tokens])
 
     const [formInput, setFormInput] = useState({
         lat: null,
@@ -38,35 +48,37 @@ export default function Create() {
         tokens_count: null
     })
 
+    // format date in seconds
     function _formatDate(dateInput: Date) {
         const date = new Date(dateInput);
         const timestamp = date.getTime();
         return timestamp;
     }
 
+    // format the coordinates to send to the contract
     function scaleCoordinatesUp(coordInput: number) { // send to the contract
         const result = Math.round(coordInput * Math.pow(10, 6))
         return result
     }
 
-    function scaleCoordinatesDown(coordInput: number) { // receive from the contract
-        const result = coordInput / Math.pow(10, 6)
-        return result
-    }
-
     async function submitForm() {
-        const { lat, long, max_distance, time_from, time_to, tokens_count } = formInput;
+        const { lat, long, max_distance, time_from, time_to } = formInput;
 
-        // format lat long and dates
+        // format data
         const timeFrom = _formatDate(time_from);
         const timeTo = _formatDate(time_to);
+        const distance = Number(max_distance);
+        const latitude = scaleCoordinatesUp(Number(lat));
+        const longitude =scaleCoordinatesUp(Number(long));
 
         // get fee
-        const data = calculateFeeResult;
-        console.log("data", data)
-        console.log("tokens", tokens)
+        const fee = Number(airdropFee?.toString())
+        
         // call the contract with formInput && postingFee
+        // to be implemented
 
+
+        // re-route home 
         // router.push("/");
 
     }
