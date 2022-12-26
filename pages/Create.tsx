@@ -5,7 +5,7 @@ import {
     Input
 } from '@chakra-ui/react'
 import { Text, Button, Center } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from "next/router";
 import { useContractRead } from 'wagmi'
 import { LogicContractAddress } from "../config/addresses"
@@ -20,10 +20,14 @@ export default function Create() {
         address: LogicContractAddress,
         abi: LogicContract.abi,
         functionName: 'calculateFee',
-        args: [tokens],
+        args: [3],
     })
 
     const router = useRouter();
+
+    useEffect(()=> {
+        console.log("feeResult", calculateFeeResult)
+    }, [] )
 
     const [formInput, setFormInput] = useState({
         lat: null,
@@ -60,10 +64,10 @@ export default function Create() {
         // get fee
         const data = calculateFeeResult;
         console.log("data", data)
-
+        console.log("tokens", tokens)
         // call the contract with formInput && postingFee
 
-        router.push("/");
+        // router.push("/");
 
     }
 
