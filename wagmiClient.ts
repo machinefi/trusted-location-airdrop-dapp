@@ -18,7 +18,7 @@ const { chains, provider } = configureChains(
                     chain.id !== iotexTestnetChain.id
                 )
                     return null;
-                return { http: `${chain.rpcUrls.default}` }
+                return { http: chain.rpcUrls.default.http[0] }
             },
         }),
         publicProvider(),
