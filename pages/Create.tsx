@@ -4,10 +4,10 @@ import {
     FormHelperText,
     Input
 } from '@chakra-ui/react'
-import { Text, Button, Center } from '@chakra-ui/react'
+import { Text, Button, Center, Container } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useRouter } from "next/router";
-import { useContractReads } from 'wagmi'
+import { useContractReads, useContractWrite, usePrepareContractWrite } from 'wagmi'
 import { LogicContractAddress } from "../config/addresses"
 import LogicContract from "../artifacts/contracts/Logic.sol/Logic.json"
 
@@ -15,12 +15,21 @@ import LogicContract from "../artifacts/contracts/Logic.sol/Logic.json"
 
 export default function Create() {
 
+    const [formInput, setFormInput] = useState({
+        lat: null,
+        long: null,
+        max_distance: null,
+        time_from: null,
+        time_to: null,
+        tokens_count: null
+    })
+    const { lat, long, max_distance, time_from, time_to } = formInput;
     const [tokens, setTokens] = useState(0);
 
     const logicContract = {
         address: LogicContractAddress,
         abi: LogicContract.abi,
-    }
+    } 
 
     const { data: airdropFee } = useContractReads({
         contracts: [
@@ -33,20 +42,33 @@ export default function Create() {
         ]
     })
 
+    const { config } = usePrepareContractWrite({
+        address: LogicContractAddress,
+        abi: LogicContract.abi,
+        functionName: 'addAirDrop',
+        chainId: 4690,
+        args: [
+            scaleCoordinatesUp(Number(lat)), 
+            scaleCoordinatesUp(Number(long)), 
+            Number(max_distance), 
+            _formatDate(time_from), 
+            _formatDate(time_to), 
+            tokens
+        ],
+        overrides: {
+            value: Number(airdropFee?.toString()),
+          },
+    })
+
+    const { data, isLoading, isSuccess, write } = useContractWrite(config)
+
     const router = useRouter();
 
     useEffect(() => {
         console.log("feeResult", airdropFee?.toString())
+        console.log("scaled lat", scaleCoordinatesUp(Number(lat)))
+        console.log("write", write)
     }, [tokens])
-
-    const [formInput, setFormInput] = useState({
-        lat: null,
-        long: null,
-        max_distance: null,
-        time_from: null,
-        time_to: null,
-        tokens_count: null
-    })
 
     // format date in seconds
     function _formatDate(dateInput: Date) {
@@ -61,19 +83,21 @@ export default function Create() {
         return result
     }
 
+
+
     async function submitForm() {
-        const { lat, long, max_distance, time_from, time_to } = formInput;
+
 
         // format data
         const timeFrom = _formatDate(time_from);
         const timeTo = _formatDate(time_to);
         const distance = Number(max_distance);
         const latitude = scaleCoordinatesUp(Number(lat));
-        const longitude =scaleCoordinatesUp(Number(long));
+        const longitude = scaleCoordinatesUp(Number(long));
 
         // get fee
         const fee = Number(airdropFee?.toString())
-        
+
         // call the contract with formInput && postingFee
         // to be implemented
 
@@ -84,7 +108,7 @@ export default function Create() {
     }
 
     return (
-        <div>
+        <Container>
             <Center>
                 <Text
                     fontSize='4xl'
@@ -130,12 +154,13 @@ export default function Create() {
                         color: 'black'
                     }}
                     mb={12}
-                    onClick={submitForm}
+                    disabled={!write}
+                    onClick={() => write?.()}
                 >
                     Submit
                 </Button>
 
             </FormControl>
-        </div>
+        </Container>
     )
 }

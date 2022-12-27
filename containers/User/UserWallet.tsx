@@ -1,5 +1,6 @@
 import { Button, Text } from "@chakra-ui/react"
 import { useAccount, useConnect, useEnsName } from "wagmi"
+import { InjectedConnector } from 'wagmi/connectors/injected'
 
 const UserWallet = () => {
     const { address, isConnected } = useAccount()
@@ -14,7 +15,7 @@ const UserWallet = () => {
                         bgGradient='linear(to-l, #7928CA, #FF0080)'
                         bgClip='text'
                         as='b'
-                    >{address?.substring(0, 5)}..{address?.substring(address.length-2)}</Text>
+                    >{address?.substring(0, 5)}..{address?.substring(address.length - 2)}</Text>
                     :
                     <Button
                         size='xs'
@@ -24,7 +25,7 @@ const UserWallet = () => {
                         borderRadius='md'
                         bgGradient='linear(to-l, #7928CA, #FF0080)'
                         _hover={{
-                            bgGradient:'linear(red.100 0%, orange.100 25%, yellow.100 50%)',
+                            bgGradient: 'linear(red.100 0%, orange.100 25%, yellow.100 50%)',
                             color: 'black'
                         }}
                         onClick={() => connect()}

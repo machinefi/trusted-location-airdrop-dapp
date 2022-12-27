@@ -1,12 +1,20 @@
 import { WagmiConfig } from 'wagmi'
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider, extendTheme, type ThemeConfig } from '@chakra-ui/react'
 import wagmiClient from "../wagmiClient"
 import { Layout } from "../containers/Layout/Layout";
 
 function MyApp({ Component, pageProps }) {
+
+  const config: ThemeConfig = {
+    initialColorMode: 'dark',
+    useSystemColorMode: false,
+  }
+
+  const theme = extendTheme({ config }) 
+
   return (
     <WagmiConfig client={wagmiClient}>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <Layout>
           <Component {...pageProps} />
         </Layout>

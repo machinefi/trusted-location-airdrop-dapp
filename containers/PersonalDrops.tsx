@@ -9,7 +9,7 @@ interface Homeprops {
 export const PersonalDrops = ({ airdrops }: Homeprops) => {
 
     return (
-        <Grid templateColumns='repeat(3, 1fr)' gap={6}>
+        <Grid templateColumns='repeat(3, 1fr)' gap={6} m={24}>
             {
                 airdrops.map((airdrop) => (
                     <Card

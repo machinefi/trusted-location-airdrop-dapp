@@ -23,7 +23,7 @@ export default function HomePage({ airdrops }: HomePageprops) { // run in client
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main >
+      <main>
         <Center>
           <Text
             fontSize='4xl'

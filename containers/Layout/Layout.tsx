@@ -5,10 +5,10 @@ import { ReactNode } from "react"
 
 export const Layout = ({ children }: { children: ReactNode }) => {
     return (
-        <Container>
+        <div>
             <Navbar />
             {children}
             <Footer />
-        </Container>
+        </div>
     )
 }
