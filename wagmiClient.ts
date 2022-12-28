@@ -2,20 +2,18 @@ import { configureChains, createClient } from "wagmi";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 
 import {
-    iotexMainnetChain,
-    iotexTestnetChain,
-} from "./config/iotexChainConfig";
+    iotexTestnet,
+} from "wagmi/chains";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { publicProvider } from "wagmi/providers/public";
 
 const { chains, provider } = configureChains(
-    [iotexMainnetChain, iotexTestnetChain],
+    [iotexTestnet],
     [
         jsonRpcProvider({
             rpc: (chain) => {
                 if (
-                    chain.id !== iotexMainnetChain.id &&
-                    chain.id !== iotexTestnetChain.id
+                    chain.id !== iotexTestnet.id
                 )
                     return null;
                 return { http: chain.rpcUrls.default.http[0] }

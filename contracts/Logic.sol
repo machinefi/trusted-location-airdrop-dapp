@@ -57,8 +57,8 @@ contract Logic is Ownable, ReentrancyGuard {
         uint _time_to, 
         uint _tokens_count
     ) external payable { 
-        require(_lat >= -90 && _lat <= 90, "Invalid latitude value");
-        require(_long >= -180 && _long <= 180, "Invalid longitude value");
+        require(_lat >= -90_000000 && _lat <= 90_000000, "Invalid latitude value");
+        require(_long >= -180_000000 && _long <= 180_000000, "Invalid longitude value");
         require(_maxDistance > 0, "Invalid max distance");
         require(msg.value >= calculateFee(_tokens_count), "Value sent with tx is not sufficient based on the tokens count");
         bytes32 airDropHash = generateHash(_lat, _long, _maxDistance, _time_from, _time_to);
