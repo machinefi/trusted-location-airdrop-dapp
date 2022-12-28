@@ -87,7 +87,7 @@ export default function Create() {
                     setTokens(Number(e.target.value))
                 }} />
                 <FormHelperText mb={6} >Specify how many tokens you would like to create for this Airdrop</FormHelperText>
-
+                
                 <Button
                     size='xs'
                     as='button'
@@ -104,11 +104,9 @@ export default function Create() {
                     onClick={() => createAirdrop()}
                 >
                     {
-                        isLoading ? <Spinner  /> : `Submit`
+                        isLoading ? <Spinner size='xs' /> : `Submit`
                     }
-
                 </Button>
-
             </FormControl>
         </Container>
     )

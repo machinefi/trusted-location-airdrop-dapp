@@ -4,6 +4,9 @@ import { airdrops } from '../airdrops';
 import { Airdrop } from "../types/Airdrop";
 import { useEffect } from "react";
 import { Text, Center } from '@chakra-ui/react'
+import { useContractReads } from 'wagmi'
+import { LogicContractAddress } from "../config/addresses"
+import LogicContract from "../artifacts/contracts/Logic.sol/Logic.json"
 
 interface HomePageprops {
   airdrops: Airdrop[]
@@ -11,8 +14,26 @@ interface HomePageprops {
 
 export default function HomePage({ airdrops }: HomePageprops) { // run in client 
 
+  const logicContract = {
+    address: LogicContractAddress,
+    abi: LogicContract.abi,
+  }
+
+  const { data: airdropHashes } = useContractReads({
+   
+    contracts: [
+      {
+        ...logicContract,
+        functionName: "getAllHashes",
+        chainId: 4690,
+      }
+    ]
+  })
+
+  const hashes = airdropHashes?.[0];
+
   useEffect(() => {
-    console.log("airdrops", airdrops)
+    console.log("hashes", hashes)
   }, [])
 
   return (

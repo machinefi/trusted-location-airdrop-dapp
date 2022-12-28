@@ -45,6 +45,10 @@ contract Logic is Ownable, ReentrancyGuard {
         return airDropsHashes.length;
     }
 
+    function getAllHashes() public view returns (bytes32[] memory) {
+        return airDropsHashes;
+    }
+    
     function generateHash(int256 _lat,int256 _long, uint256 _maxDistance,uint _time_from,uint _time_to) internal pure returns (bytes32 _hash) {
         _hash = keccak256(abi.encodePacked(_lat, _long, _maxDistance, _time_from, _time_to));
     }
