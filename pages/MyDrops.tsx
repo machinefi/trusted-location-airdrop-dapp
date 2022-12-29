@@ -2,16 +2,93 @@ import { Text, Center, Card, CardBody } from '@chakra-ui/react'
 import { myAirdrops } from "../airdrops";
 import { Airdrop } from "../types/Airdrop";
 import { PersonalDrops } from '../containers/PersonalDrops';
+import { useContractReads, useAccount } from 'wagmi'
+import { LogicContractAddress } from "../config/addresses"
+import LogicContract from "../artifacts/contracts/Logic.sol/Logic.json"
+import { useEffect } from 'react';
 
 interface Homeprops {
     myAirdrops: Airdrop[]
 }
 
 export default function MyDrops({ myAirdrops }: Homeprops) {
+    const { address, isConnecting, isDisconnected } = useAccount()
+
+    const logicContract = {
+        address: LogicContractAddress,
+        abi: LogicContract.abi,
+    }
+
+    const { data: airdropHashes } = useContractReads({
+
+        contracts: [
+            {
+                ...logicContract,
+                functionName: "getAllHashes",
+                chainId: 4690,
+            }
+        ]
+    })
+
+    const hashes: any = airdropHashes?.[0];
+
+    const myHashes = hashes?.forEach((drop) => {
+        let result: any = []
+        const { data: isMyAirdrop } = useContractReads({
+            contracts: [
+                {
+                    ...logicContract,
+                    functionName: "claimedAirDrops",
+                    chainId: 4690,
+                    args: [address, drop]
+                }
+            ]
+        })
+
+        if (isMyAirdrop?.[0]) {
+            result.push(drop)
+        }
+        return result
+    });
+
+    myHashes?.forEach((drop) => {
+        let result: any = []
+        const { data: Airdrop } = useContractReads({
+            contracts: [
+                {
+                    ...logicContract,
+                    functionName: "airDrops",
+                    chainId: 4690,
+                    args: [drop]
+                }
+            ]
+        })
+        result.push(Airdrop?.[0])
+    });
+
+    const myDrops = myHashes?.map((drop) => {
+        const data = {
+            lat: drop?.[0].toString(),
+            long: drop?.[1].toString(),
+            max_distance: drop?.[2].toString(),
+            time_from: drop?.[3].toString(),
+            time_to: drop?.[4].toString(),
+            tokens_count: drop?.[5].toString(),
+            tokens_minted: drop?.[6].toString()
+        }
+        return data
+    })
+
+    useEffect(() => {
+        console.log("address", address)
+        console.log("myDrops", myDrops)
+    }, [])
+
+
     return (
         <div>
             {
-                myAirdrops.length > 0
+                myDrops?.length > 0
                     ?
                     <div>
                         <Center>
@@ -24,7 +101,7 @@ export default function MyDrops({ myAirdrops }: Homeprops) {
                             >
                                 My Airdrops</Text>
                         </Center>
-                        <PersonalDrops airdrops={myAirdrops} />
+                        <PersonalDrops airdrops={myDrops} />
                     </div>
                     :
                     <div>

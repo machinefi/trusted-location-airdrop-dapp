@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { Home } from "../containers/Home";
 import { airdrops } from '../airdrops';
 import { Airdrop } from "../types/Airdrop";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Text, Center } from '@chakra-ui/react'
 import { useContractReads } from 'wagmi'
 import { LogicContractAddress } from "../config/addresses"
@@ -14,13 +14,15 @@ interface HomePageprops {
 
 export default function HomePage({ airdrops }: HomePageprops) { // run in client 
 
+  const [drops, setDrops] = useState();
+
   const logicContract = {
     address: LogicContractAddress,
     abi: LogicContract.abi,
   }
 
   const { data: airdropHashes } = useContractReads({
-   
+
     contracts: [
       {
         ...logicContract,
@@ -30,10 +32,41 @@ export default function HomePage({ airdrops }: HomePageprops) { // run in client
     ]
   })
 
-  const hashes = airdropHashes?.[0];
+  const hashes: any = airdropHashes?.[0];
+
+  let result: any = []
+
+  hashes?.forEach((drop) => {
+    const {data: Airdrop} = useContractReads({
+      contracts: [
+        {
+          ...logicContract,
+          functionName: "airDrops",
+          chainId: 4690,
+          args: [drop]
+        }
+      ]
+    })
+    result.push(Airdrop?.[0])
+  });
+
+  const allDrops = result?.map((drop) => {
+    const data = {
+      lat: drop?.[0].toString(),
+      long: drop?.[1].toString(), 
+      max_distance: drop?.[2].toString(),
+      time_from: drop?.[3].toString(),
+      time_to: drop?.[4].toString(),
+      tokens_count: drop?.[5].toString(),
+      tokens_minted: drop?.[6].toString()
+    }
+    return data
+  })
 
   useEffect(() => {
     console.log("hashes", hashes)
+    console.log("result", allDrops)
+    setDrops(allDrops)
   }, [])
 
   return (
@@ -52,18 +85,17 @@ export default function HomePage({ airdrops }: HomePageprops) { // run in client
             bgClip='text'
             as='b'
           >
-            NFT Location Airdrop</Text>
+            NFT GeoStream Airdrop</Text>
         </Center>
         <Center>
           <Text
             fontSize='xl'
-            mb={12}
             as='i'
           >check out all the available airdrops</Text>
         </Center>
 
         <div>
-          <Home airdrops={airdrops} />
+          <Home airdrops={drops} />
         </div>
       </main>
     </div>
