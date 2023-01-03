@@ -1,6 +1,10 @@
 import { Airdrop } from "../types/Airdrop";
 import { Card, CardHeader, CardBody, Heading, Box, Text, Button, Center } from '@chakra-ui/react'
 import { Grid } from '@chakra-ui/react'
+import { useContractReads, useAccount } from 'wagmi'
+import { iotexTestnet } from "wagmi/chains";
+import { useRouter } from "next/router";
+import { useSignMessage } from 'wagmi'
 
 interface Homeprops {
     airdrops: Airdrop[]
@@ -19,29 +23,7 @@ export const Home = ({ airdrops }: Homeprops) => {
         return date;
     }
 
-    async function handleClaim() {
-        const response = await fetch(`https://geo-test.w3bstream.com/api/pol`, {
-            method: "POST",
-            // headers: {
-            //     "content-type": "application/json"
-            // },
-            body: JSON.stringify({
-                "signature": "string",
-                "message": "string",
-                "owner": "0x954a4668f429C1A651aa8E0dF08C586B1272AEF6",
-                "locations": [
-                    {
-                        "scaled_latitude": 4131637,
-                        "scaled_longitude": 10168213,
-                        "distance": 1000,
-                        "from": 1669703481,
-                        "to": 1669706481
-                    }
-                ]
-            })
-        })
-        console.log("response", response)
-    }
+
 
     return (
         <Grid templateColumns='repeat(3, 1fr)' gap={6} m={24}>
@@ -89,24 +71,7 @@ export const Home = ({ airdrops }: Homeprops) => {
                                 </Text>
 
                                 <Center>
-                                    <Button
-                                        size='xs'
-                                        as='button'
-                                        color='white'
-                                        fontWeight='bold'
-                                        borderRadius='md'
-                                        border='1px'
-                                        borderColor='white'
-                                        bgGradient='linear(to-l, #7928CA, #FF0080)'
-                                        _hover={{
-                                            bgGradient: 'linear(red.100 0%, orange.100 25%, yellow.100 50%)',
-                                            color: 'black'
-                                        }}
-                                        mt={12}
-                                        onClick={()=> handleClaim()}
-                                    >
-                                        Claim
-                                    </Button>
+                                    <ClaimVerifier airdrop={airdrop} />
                                 </Center>
 
                             </Box>
@@ -120,79 +85,70 @@ export const Home = ({ airdrops }: Homeprops) => {
 }
 
 
-// interface Homeprops {
-//     airdrops: Airdrop[]
-// }
+const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
+    const router = useRouter()
+    const { address, isConnecting, isDisconnected } = useAccount()
+    const { data, signMessage } = useSignMessage({
+        onSuccess: async (data, variables) => {
+            const response = await fetch(`https://geo-test.w3bstream.com/api/pol`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "signature": data,
+                    "message": variables.message,
+                    "owner": address,
+                    "locations": [
+                        {
+                            "scaled_latitude": Number(airdrop.lat),
+                            "scaled_longitude": Number(airdrop.long),
+                            "distance": airdrop.max_distance,
+                            "from": Number(airdrop.time_from),
+                            "to": Number(airdrop.time_to)
+                        }
+                    ]
+                })
+            })
+            console.log("response", await response.json())
+            console.log("data", data)
+            console.log("variables", variables)
+        },
+    })
 
-// export const Home = ({ airdrops }: Homeprops) => {
+    async function handleClaim() {
+        const message = JSON.stringify({
+            domain: `http://localhost:3000/`,
+            address: address,
+            statement: `Sign in Location Based NFT The application will know if you were located in one of the following regions in the time range below:${Number(airdrop.lat)}, ${Number(airdrop.long)}, ${airdrop.max_distance}, ${Number(airdrop.time_from)}, ${Number(airdrop.time_to)}  `,
+            uri: `http://localhost:3000${router.asPath}`,
+            version: "1",
+            chainId: iotexTestnet.id,
+            expirationTime: Date.now().toString()
+        });
+        signMessage({ message })
+    }
 
-//     // format the coordinates received from the contract
-//     function scaleCoordinatesDown(coordInput: number) { 
-//         const result = coordInput / Math.pow(10, 6)
-//         return result
-//     }
-
-//     return (
-//         <Grid templateColumns='repeat(3, 1fr)' gap={6} m={24}>
-//             {
-//                 airdrops.map((airdrop) => (
-//                     <Card
-//                         key={airdrop.id}
-//                         maxW='sm'
-//                         _hover={{
-//                             bgGradient: 'linear(to-l, #7928CA, #FF0080)',
-//                             color: 'white'
-//                         }}
-//                         boxShadow='inner'
-//                     >
-//                         <CardHeader>
-//                             <Heading
-//                                 size='md'
-//                                 as='b'
-//                             >
-//                                 <Center>
-//                                     Air Drop {airdrop.id}
-//                                 </Center>
-//                             </Heading>
-//                         </CardHeader>
-//                         <CardBody>
-//                             <Box>
-//                                 <Heading size='xs' textTransform='uppercase'>
-
-//                                     {airdrop.title}
-//                                 </Heading>
-
-//                                 <Text pt='2' fontSize='sm' noOfLines={3}>
-//                                     {airdrop.description}
-//                                 </Text>
-//                                 <Center>
-//                                     <Button
-//                                         size='xs'
-//                                         as='button'
-//                                         color='white'
-//                                         fontWeight='bold'
-//                                         borderRadius='md'
-//                                         border='1px'
-//                                         borderColor='white'
-//                                         bgGradient='linear(to-l, #7928CA, #FF0080)'
-//                                         _hover={{
-//                                             bgGradient: 'linear(red.100 0%, orange.100 25%, yellow.100 50%)',
-//                                             color: 'black'
-//                                         }}
-//                                         mt={12}
-//                                     >
-//                                         Claim
-//                                     </Button>
-//                                 </Center>
-
-//                             </Box>
-//                         </CardBody>
-
-//                     </Card>
-//                 ))
-//             }
-//         </Grid>
-//     )
-// }
+    return (
+        <Button
+            size='xs'
+            as='button'
+            color='white'
+            fontWeight='bold'
+            borderRadius='md'
+            border='1px'
+            borderColor='white'
+            bgGradient='linear(to-l, #7928CA, #FF0080)'
+            _hover={{
+                bgGradient: 'linear(red.100 0%, orange.100 25%, yellow.100 50%)',
+                color: 'black'
+            }}
+            mt={12}
+            onClick={() => handleClaim()}
+        >
+            Claim
+        </Button>
+    )
+}
 
 
