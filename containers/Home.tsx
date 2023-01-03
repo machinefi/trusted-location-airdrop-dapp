@@ -19,6 +19,30 @@ export const Home = ({ airdrops }: Homeprops) => {
         return date;
     }
 
+    async function handleClaim() {
+        const response = await fetch(`https://geo-test.w3bstream.com/api/pol`, {
+            method: "POST",
+            // headers: {
+            //     "content-type": "application/json"
+            // },
+            body: JSON.stringify({
+                "signature": "string",
+                "message": "string",
+                "owner": "0x954a4668f429C1A651aa8E0dF08C586B1272AEF6",
+                "locations": [
+                    {
+                        "scaled_latitude": 4131637,
+                        "scaled_longitude": 10168213,
+                        "distance": 1000,
+                        "from": 1669703481,
+                        "to": 1669706481
+                    }
+                ]
+            })
+        })
+        console.log("response", response)
+    }
+
     return (
         <Grid templateColumns='repeat(3, 1fr)' gap={6} m={24}>
             {
@@ -45,7 +69,7 @@ export const Home = ({ airdrops }: Homeprops) => {
                         <CardBody>
                             <Box>
                                 <Heading size='xs' textTransform='uppercase'>
-                                    Tokens Left: { Number(airdrop.tokens_count) - Number(airdrop.tokens_minted) } of {airdrop.tokens_count}
+                                    Tokens Left: {Number(airdrop.tokens_count) - Number(airdrop.tokens_minted)} of {airdrop.tokens_count}
                                 </Heading>
 
                                 <Text pt='2' fontSize='sm' textTransform='uppercase' >
@@ -79,6 +103,7 @@ export const Home = ({ airdrops }: Homeprops) => {
                                             color: 'black'
                                         }}
                                         mt={12}
+                                        onClick={()=> handleClaim()}
                                     >
                                         Claim
                                     </Button>
