@@ -120,7 +120,7 @@ const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
         const message = JSON.stringify({
             domain: `http://localhost:3000/`,
             address: address,
-            statement: `Sign in Location Based NFT The application will know if you were located in one of the following regions in the time range below:${Number(airdrop.lat)}, ${Number(airdrop.long)}, ${airdrop.max_distance}, ${Number(airdrop.time_from)}, ${Number(airdrop.time_to)}  `,
+            statement: `Sign in Location Based NFT. The application will know if you were located in the following region with latitude: ${Number(airdrop.lat)}, longitude: ${Number(airdrop.long)}, and a maximum distance of: ${airdrop.max_distance}, within the time range from: ${Number(airdrop.time_from)}, to: ${Number(airdrop.time_to)}`,
             uri: `http://localhost:3000${router.asPath}`,
             version: "1",
             chainId: iotexTestnet.id,
