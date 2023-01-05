@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { useSignMessage } from 'wagmi'
 import { SiweMessage } from "siwe";
 import axios from "axios";
+import moment from "moment";
 
 interface Homeprops {
     airdrops: Airdrop[]
@@ -103,7 +104,7 @@ function createSiweMessage(
         uri: globalThis.location.origin,
         version: "1",
         chainId: iotexTestnet.id,
-        expirationTime: new Date(Date.now()+ 300000).toLocaleString()// expiration in 5 minute
+        expirationTime: moment().add(5, "minutes").toISOString(),
     })
     return message.prepareMessage();
 }
@@ -177,17 +178,17 @@ const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
             scaled_latitude: Number(airdrop.lat),
             scaled_longitude: Number(airdrop.long),
             distance: Number(airdrop.max_distance),
-            from: Number(airdrop.time_from),
-            to: Number(airdrop.time_to)
+            from: airdrop.time_from,
+            to: airdrop.time_to
         }
     ]
 
     const { data, signMessage } = useSignMessage({
         onSuccess: async (data, variables) => {
-            console.log("locations: ", locations )
-            console.log("address: ", address )
-            console.log("signature: ", data )
-            console.log("message: ", variables.message )
+            console.log("locations: ", locations)
+            console.log("address: ", address)
+            console.log("signature: ", data)
+            console.log("message: ", variables.message)
             const response = await QueryPolAPI(locations, address, data, variables.message)
             console.log("response", response)
         }
@@ -214,8 +215,8 @@ const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
             console.log("Body: ", body);
         });
         console.log(`Query result.`, response);
-        if (typeof response === "object") { 
-            return response.data.result.data; 
+        if (typeof response === "object") {
+            return response.data.result.data;
         }
     }
 
