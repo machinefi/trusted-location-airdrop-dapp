@@ -112,66 +112,7 @@ function createSiweMessage(
 
 const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
     const router = useRouter()
-    const { address, isConnecting, isDisconnected } = useAccount()
-    // const { data, signMessage } = useSignMessage({
-    //     onSuccess: async (data, variables) => {
-    //         const response = await fetch(`https://geo-test.w3bstream.com/api/pol`, {
-    //             method: "POST",
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //             },
-    //             body: JSON.stringify({
-    //                 "signature": data,
-    //                 "message": variables.message,
-    //                 "owner": address,
-    //                 "locations": [
-    //                     {
-    //                         "scaled_latitude": Number(airdrop.lat),
-    //                         "scaled_longitude": Number(airdrop.long),
-    //                         "distance": airdrop.max_distance,
-    //                         "from": Number(airdrop.time_from),
-    //                         "to": Number(airdrop.time_to)
-    //                     }
-    //                 ]
-    //             })
-    //         })
-
-    //         // reproduce body just for logging it (will be erased later)
-    //         const body = JSON.stringify({
-    //             "signature": data,
-    //             "message": variables.message,
-    //             "owner": address,
-    //             "locations": [
-    //                 {
-    //                     "scaled_latitude": Number(airdrop.lat),
-    //                     "scaled_longitude": Number(airdrop.long),
-    //                     "distance": airdrop.max_distance,
-    //                     "from": Number(airdrop.time_from),
-    //                     "to": Number(airdrop.time_to)
-    //                 }
-    //             ]
-    //         })
-
-
-    //         console.log("response", await response.json())
-    //         console.log("data", data)
-    //         console.log("variables", variables)
-    //         console.log("body", body)
-    //     },
-    // })
-
-    // async function handleClaim() {
-    //     const message = JSON.stringify({
-    // domain:  globalThis.location.host,
-    // address: address,
-    // statement: `The application will know if you were located in the following region with latitude: ${Number(airdrop.lat)}, longitude: ${Number(airdrop.long)}, and within a maximum distance of: ${Number(airdrop.max_distance)} meters, within the time range from: ${Number(airdrop.time_from)}, to: ${Number(airdrop.time_to)}`,
-    // uri: globalThis.location.origin,
-    // version: "1",
-    // chainId: iotexTestnet.id,
-    // expirationTime: (Date.now() + 60000).toString() // expiration in 1 minute
-    //     });
-    //     signMessage({ message })
-    // }
+    const { address, isConnected } = useAccount()
 
     const locations = [
         {
@@ -235,6 +176,7 @@ const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
                 color: 'black'
             }}
             mt={12}
+            disabled={!isConnected}
             onClick={() => {
                 let message = createSiweMessage(
                     address,
@@ -247,7 +189,9 @@ const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
                 signMessage({ message })
             }}
         >
-            Claim
+            {
+                isConnected ? `Claim` : `Connect Wallet`
+            }
         </Button>
     )
 }
