@@ -8,6 +8,9 @@ import { useSignMessage } from 'wagmi'
 import { SiweMessage } from "siwe";
 import axios from "axios";
 import moment from "moment";
+import { useEffect, useState } from "react";
+import { useClaimDrop } from "../hooks/useClaimDrop";
+import { VerifiedLocation } from "../types/VerifiedLocation";
 
 interface Homeprops {
     airdrops: Airdrop[]
@@ -114,6 +117,26 @@ const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
     const router = useRouter()
     const { address, isConnected } = useAccount()
 
+    const [verifiedLocations, setVerifiedLocations] = useState<VerifiedLocation[]>([]);
+    const [isReadyToClaim, setIsReadyToClaim] = useState(false);
+
+    const { isLoading, isSuccess, claimAirdrop } = useClaimDrop({
+        scaled_latitude: isReadyToClaim ? verifiedLocations[0].scaled_latitude : 0,
+        scaled_longitude: isReadyToClaim ? verifiedLocations[0].scaled_longitude : 0,
+        distance: isReadyToClaim ? verifiedLocations[0].distance : 0,
+        from: isReadyToClaim ? verifiedLocations[0].from : 0,
+        to: isReadyToClaim ? verifiedLocations[0].to : 0,
+        devicehash: isReadyToClaim ? verifiedLocations[0].devicehash : "",
+        signature: isReadyToClaim ? verifiedLocations[0].signature : "",
+        isReadyToClaim
+    })
+
+    useEffect(() => {
+        if (isReadyToClaim) {
+            claimAirdrop?.()
+        }
+    }, [claimAirdrop, isReadyToClaim])
+
     const locations = [
         {
             scaled_latitude: Number(airdrop.lat),
@@ -130,12 +153,11 @@ const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
             console.log("address: ", address)
             console.log("signature: ", data)
             console.log("message: ", variables.message)
-            const response = await QueryPolAPI(locations, address, data, variables.message)
-            console.log("response", response)
+            await queryPolAPI(locations, address, data, variables.message)
         }
     })
 
-    async function QueryPolAPI(
+    async function queryPolAPI(
         locations,
         address: string,
         signature: string,
@@ -156,9 +178,25 @@ const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
             console.log("Body: ", body);
         });
         console.log(`Query result.`, response);
-        if (typeof response === "object") {
-            return response.data.result.data;
+        if (typeof response === "object" && response.data.result.data.length > 0) {
+            setVerifiedLocations([...response.data.result.data])
+            setIsReadyToClaim(true)
+        } else {
+            setVerifiedLocations([])
+            setIsReadyToClaim(false)
         }
+    }
+
+    function handleClaim() {
+        let message = createSiweMessage(
+            address,
+            airdrop.lat,
+            airdrop.long,
+            airdrop.max_distance,
+            airdrop.time_from,
+            airdrop.time_to
+        );
+        signMessage({ message })
     }
 
     return (
@@ -177,17 +215,7 @@ const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
             }}
             mt={12}
             disabled={!isConnected}
-            onClick={() => {
-                let message = createSiweMessage(
-                    address,
-                    airdrop.lat,
-                    airdrop.long,
-                    airdrop.max_distance,
-                    airdrop.time_from,
-                    airdrop.time_to
-                );
-                signMessage({ message })
-            }}
+            onClick={handleClaim}
         >
             {
                 isConnected ? `Claim` : `Connect Wallet`
