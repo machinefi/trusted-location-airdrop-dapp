@@ -4,8 +4,11 @@ import { LogicContractAddress } from "../config/addresses"
 import LogicContract from "../artifacts/contracts/Logic.sol/Logic.json"
 import { ClaimVerifier } from './ClaimVerifier'
 import { useEffect, useState } from 'react'
+import { Airdrop } from "../types/Airdrop";
 
 export const AirdropCard = ({ hash }: { hash: string }) => {
+
+    const [properDrop, setProperDrop] = useState()
 
     const logicContract = {
         address: LogicContractAddress,
@@ -16,12 +19,18 @@ export const AirdropCard = ({ hash }: { hash: string }) => {
         ...logicContract,
         functionName: "airDrops",
         args: [hash], 
-        // onSuccess: (airdrop)=> {
-        //     const proper = {
-
-        //     }
-        //     setProper(proper)
-        // }
+        onSuccess: (airdrop)=> {
+            const properAirdrop = {
+                lat: Number(airdrop[0].toString()),
+                long: Number(airdrop[1].toString()),
+                max_distance: Number(airdrop[2].toString()),
+                time_from: Number(airdrop[3].toString()),
+                time_to: Number(airdrop[4].toString()),
+                tokens_count: Number(airdrop[5].toString()),
+                tokens_minted: Number(airdrop[6].toString()),
+            }
+            setProperDrop(properAirdrop)
+        }
     })
 
     // format the coordinates received from the contract
@@ -37,8 +46,8 @@ export const AirdropCard = ({ hash }: { hash: string }) => {
     }
 
     useEffect(()=> {
-        console.log("data", airdrop)
-    }, [airdrop])
+        console.log("data", properDrop)
+    }, [properDrop])
 
     return (
         <Card
@@ -63,23 +72,23 @@ export const AirdropCard = ({ hash }: { hash: string }) => {
                 <Box>
 
                     <Heading size='xs' textTransform='uppercase'>
-                        Tokens Left: {airdrop ? `${Number(airdrop.tokens_count) - Number(airdrop.tokens_minted)} of ${airdrop.tokens_count}` : `loading`}
+                        Tokens Left: {properDrop ? `${Number(properDrop.tokens_count) - Number(properDrop.tokens_minted)} of ${properDrop.tokens_count}` : `loading`}
                     </Heading>
 
                     <Text pt='2' fontSize='sm' textTransform='uppercase' >
-                        Latitude: {airdrop ? scaleCoordinatesDown(Number(airdrop.lat)) : "loading"}
+                        Latitude: {properDrop ? scaleCoordinatesDown(Number(properDrop.lat)) : "loading"}
                     </Text>
                     <Text pt='2' fontSize='sm' textTransform='uppercase' >
-                        Longitude: {airdrop ? scaleCoordinatesDown(Number(airdrop.long)) : "loading"}
+                        Longitude: {properDrop ? scaleCoordinatesDown(Number(properDrop.long)) : "loading"}
                     </Text>
                     <Text pt='2' fontSize='sm' textTransform='uppercase' >
-                        Distance: {airdrop ? `${airdrop.max_distance} meters` : `loading`}
+                        Distance: {properDrop ? `${properDrop.max_distance} meters` : `loading`}
                     </Text>
                     <Text pt='2' fontSize='sm' textTransform='uppercase' >
-                        From: {airdrop ? formatDate(Number(airdrop.time_from)) : "loading"}
+                        From: {properDrop ? formatDate(Number(properDrop.time_from)) : "loading"}
                     </Text>
                     <Text pt='2' fontSize='sm' textTransform='uppercase' >
-                        To: {airdrop ? formatDate(Number(airdrop.time_to)) : "loading"}
+                        To: {properDrop ? formatDate(Number(properDrop.time_to)) : "loading"}
                     </Text>
 
                     <Center>
