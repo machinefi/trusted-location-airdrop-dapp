@@ -12,9 +12,9 @@ export const AirdropCard = ({ hash }: { hash: string }) => {
     useContractRead({
         ...logicContractConfig,
         functionName: "airDrops",
-        args: [hash], 
-        onSuccess: (airdrop: bigint[])=> {
-            const properAirdrop:Airdrop = {
+        args: [hash],
+        onSuccess: (airdrop: bigint[]) => {
+            const properAirdrop: Airdrop = {
                 lat: airdrop[0].toString(),
                 long: airdrop[1].toString(),
                 max_distance: airdrop[2].toString(),
@@ -39,8 +39,8 @@ export const AirdropCard = ({ hash }: { hash: string }) => {
         return date;
     }
 
-    useEffect(()=> {
-        console.log("data", properDrop)
+    useEffect(() => {
+        console.log("properDrop", properDrop)
     }, [properDrop])
 
     return (
@@ -58,7 +58,7 @@ export const AirdropCard = ({ hash }: { hash: string }) => {
                     as='b'
                 >
                     <Center>
-                        Air Drop 
+                        Air Drop
                     </Center>
                 </Heading>
             </CardHeader>
