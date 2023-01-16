@@ -1,31 +1,13 @@
 import Head from 'next/head'
-import { Home } from "../containers/Home";
-import { airdrops } from '../airdrops';
-import { Airdrop } from "../types/Airdrop";
-import { useEffect, useState } from "react";
 import { Text, Center } from '@chakra-ui/react'
-import { useContractReads, useContractRead } from 'wagmi'
-import { LogicContractAddress } from "../config/addresses"
-import LogicContract from "../artifacts/contracts/Logic.sol/Logic.json"
+import dynamic from 'next/dynamic'
 
-interface HomePageprops {
-  airdrops: Airdrop[]
-}
+const Home = dynamic(() => import("../containers/Home"), {
+  ssr: false
+})
 
-export default function HomePage({ airdrops }: HomePageprops) { // run in client 
 
-  const logicContract = {
-    address: LogicContractAddress,
-    abi: LogicContract.abi,
-  }
-
-  const { data: airdropHashes } = useContractRead({
-    address: logicContract.address,
-    abi: logicContract.abi,
-    functionName: "getAllHashes",
-    chainId: 4690,
-    onSuccess: (data) => console.log("data", data)
-  })
+export default function HomePage() {
 
   return (
     <div >
@@ -53,17 +35,11 @@ export default function HomePage({ airdrops }: HomePageprops) { // run in client
         </Center>
 
         <div>
-          <Home airdropsHashes={airdropHashes || []} />
+          <Home />
         </div>
       </main>
     </div>
   )
 }
 
-export function getStaticProps() { // run server side 
-  return {
-    props: {
-      airdrops
-    }
-  }
-}
+

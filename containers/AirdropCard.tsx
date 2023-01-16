@@ -8,26 +8,26 @@ import { Airdrop } from "../types/Airdrop";
 
 export const AirdropCard = ({ hash }: { hash: string }) => {
 
-    const [properDrop, setProperDrop] = useState()
+    const [properDrop, setProperDrop] = useState<Airdrop | undefined>()
 
     const logicContract = {
         address: LogicContractAddress,
         abi: LogicContract.abi,
     }
 
-    const { data: airdrop } = useContractRead({
+    useContractRead({
         ...logicContract,
         functionName: "airDrops",
         args: [hash], 
         onSuccess: (airdrop)=> {
-            const properAirdrop = {
-                lat: Number(airdrop[0].toString()),
-                long: Number(airdrop[1].toString()),
-                max_distance: Number(airdrop[2].toString()),
-                time_from: Number(airdrop[3].toString()),
-                time_to: Number(airdrop[4].toString()),
-                tokens_count: Number(airdrop[5].toString()),
-                tokens_minted: Number(airdrop[6].toString()),
+            const properAirdrop:Airdrop = {
+                lat: airdrop[0].toString(),
+                long: airdrop[1].toString(),
+                max_distance: airdrop[2].toString(),
+                time_from: airdrop[3].toString(),
+                time_to: airdrop[4].toString(),
+                tokens_count: airdrop[5].toString(),
+                tokens_minted: airdrop[6].toString(),
             }
             setProperDrop(properAirdrop)
         }
@@ -101,3 +101,5 @@ export const AirdropCard = ({ hash }: { hash: string }) => {
         </Card>
     )
 }
+
+export default AirdropCard;

@@ -21,6 +21,7 @@ const UserWallet = () => {
                         {
                             connectors.map((connector) => (
                                 <Button
+                                key={connector.id}
                                     size='xs'
                                     as='button'
                                     color='white'
