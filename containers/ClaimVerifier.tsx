@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useSignMessage, useContractReads, useAccount } from 'wagmi'
+import { useSignMessage, useAccount } from 'wagmi'
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useClaimDrop } from "../hooks/useClaimDrop";
@@ -8,7 +8,8 @@ import moment from "moment";
 import { Airdrop } from "../types/Airdrop";
 import { SiweMessage } from "siwe";
 import { iotexTestnet } from "wagmi/chains";
-import { Card, CardHeader, CardBody, Heading, Box, Text, Button, Center } from '@chakra-ui/react'
+import { Button } from '@chakra-ui/react'
+import { Location } from "../types/Location";
 
 const GEOSTREAM_API = "https://geo-test.w3bstream.com/api/pol";
 
@@ -68,7 +69,7 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
         }
     }, [claimAirdrop, isReadyToClaim])
 
-    const locations = [
+    const locations: Location[] = [
         {
             scaled_latitude: Number(airdrop.lat),
             scaled_longitude: Number(airdrop.long),
@@ -78,18 +79,18 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
         }
     ]
 
-    const { data, signMessage } = useSignMessage({
+    const { signMessage } = useSignMessage({
         onSuccess: async (data, variables) => {
             console.log("locations: ", locations)
             console.log("address: ", address)
             console.log("signature: ", data)
             console.log("message: ", variables.message)
-            await queryPolAPI(locations, address, data, variables.message)
+            await queryPolAPI(locations, address as `0x${string}`, data, variables.message)
         }
     })
 
     async function queryPolAPI(
-        locations,
+        locations: Location[],
         address: string,
         signature: string,
         message: string | Uint8Array
@@ -119,6 +120,7 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
     }
 
     function handleClaim() {
+        if (!address) return
         let message = createSiweMessage(
             address,
             airdrop.lat,

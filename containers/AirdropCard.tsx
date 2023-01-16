@@ -19,7 +19,7 @@ export const AirdropCard = ({ hash }: { hash: string }) => {
         ...logicContract,
         functionName: "airDrops",
         args: [hash], 
-        onSuccess: (airdrop)=> {
+        onSuccess: (airdrop: bigint[])=> {
             const properAirdrop:Airdrop = {
                 lat: airdrop[0].toString(),
                 long: airdrop[1].toString(),
@@ -68,7 +68,7 @@ export const AirdropCard = ({ hash }: { hash: string }) => {
                     </Center>
                 </Heading>
             </CardHeader>
-            {/* <CardBody>
+            <CardBody>
                 <Box>
 
                     <Heading size='xs' textTransform='uppercase'>
@@ -92,11 +92,13 @@ export const AirdropCard = ({ hash }: { hash: string }) => {
                     </Text>
 
                     <Center>
-                        <ClaimVerifier airdrop={airdrop} />
+                        {
+                            !!properDrop && <ClaimVerifier airdrop={properDrop} />
+                        }
                     </Center>
 
                 </Box>
-            </CardBody> */}
+            </CardBody>
 
         </Card>
     )
