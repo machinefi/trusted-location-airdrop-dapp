@@ -101,7 +101,7 @@ export default function Create() {
                     }}
                     mb={12}
                     disabled={isLoading || !createAirdrop || !isValidInput}
-                    onClick={() => createAirdrop()}
+                    onClick={() => createAirdrop?.()}
                 >
                     {
                         isLoading ? <Spinner size='xs' /> : `Submit`
