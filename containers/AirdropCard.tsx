@@ -1,7 +1,6 @@
 import { Card, CardHeader, CardBody, Heading, Box, Text, Button, Center } from '@chakra-ui/react'
 import { useContractRead } from 'wagmi'
-import { LogicContractAddress } from "../config/addresses"
-import LogicContract from "../artifacts/contracts/Logic.sol/Logic.json"
+import { logicContractConfig } from '../hooks/hooksConfig'
 import { ClaimVerifier } from './ClaimVerifier'
 import { useEffect, useState } from 'react'
 import { Airdrop } from "../types/Airdrop";
@@ -10,13 +9,8 @@ export const AirdropCard = ({ hash }: { hash: string }) => {
 
     const [properDrop, setProperDrop] = useState<Airdrop | undefined>()
 
-    const logicContract = {
-        address: LogicContractAddress,
-        abi: LogicContract.abi,
-    }
-
     useContractRead({
-        ...logicContract,
+        ...logicContractConfig,
         functionName: "airDrops",
         args: [hash], 
         onSuccess: (airdrop: bigint[])=> {

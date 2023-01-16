@@ -1,6 +1,5 @@
 import { useContractWrite, usePrepareContractWrite } from 'wagmi'
-import { LogicContractAddress } from "../config/addresses"
-import LogicContract from "../artifacts/contracts/Logic.sol/Logic.json"
+import { logicContractConfig } from "./hooksConfig"
 import { useRouter } from "next/router";
 
 type AirdropCreateProps = {
@@ -16,8 +15,7 @@ type AirdropCreateProps = {
 export const useAirdropCreate = ({ lat, long, max_distance, time_from, time_to, tokens_count, airdropFee }: AirdropCreateProps) => {
     const router = useRouter();
     const { config } = usePrepareContractWrite({
-        address: LogicContractAddress,
-        abi: LogicContract.abi,
+        ...logicContractConfig,
         functionName: 'addAirDrop',
         args: [
             scaleCoordinatesUp(Number(lat)),
@@ -32,8 +30,8 @@ export const useAirdropCreate = ({ lat, long, max_distance, time_from, time_to, 
         },
     })
 
-    const { data, isLoading, isSuccess, write } = useContractWrite({...config, onSuccess: () => router.push("/") })
-    
+    const { data, isLoading, isSuccess, write } = useContractWrite({ ...config, onSuccess: () => router.push("/") })
+
     return { data, isLoading, isSuccess, createAirdrop: write };
 }
 

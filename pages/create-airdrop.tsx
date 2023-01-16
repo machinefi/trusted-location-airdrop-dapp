@@ -5,10 +5,9 @@ import {
     Input
 } from '@chakra-ui/react'
 import { Text, Button, Center, Container, Spinner } from '@chakra-ui/react'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useContractReads } from 'wagmi'
-import { LogicContractAddress } from "../config/addresses"
-import LogicContract from "../artifacts/contracts/Logic.sol/Logic.json"
+import { logicContractConfig } from '../hooks/hooksConfig'
 import { useAirdropCreate } from '../hooks/useAirdropCreate';
 
 
@@ -25,15 +24,10 @@ export default function Create() {
     const { lat, long, max_distance, time_from, time_to } = formInput;
     const [tokens, setTokens] = useState(0);
 
-    const logicContract = {
-        address: LogicContractAddress,
-        abi: LogicContract.abi,
-    }
-
     const { data: airdropFee } = useContractReads({
         contracts: [
             {
-                ...logicContract,
+                ...logicContractConfig,
                 functionName: "calculateFee",
                 args: [tokens],
                 chainId: 4690,

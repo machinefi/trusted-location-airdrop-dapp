@@ -3,8 +3,7 @@ import { myAirdrops } from "../airdrops";
 import { Airdrop } from "../types/Airdrop";
 import { PersonalDrops } from '../containers/PersonalDrops';
 import { useContractReads, useAccount } from 'wagmi'
-import { LogicContractAddress } from "../config/addresses"
-import LogicContract from "../artifacts/contracts/Logic.sol/Logic.json"
+import { logicContractConfig } from '../hooks/hooksConfig';
 import { useEffect } from 'react';
 
 interface Homeprops {
@@ -14,16 +13,11 @@ interface Homeprops {
 export default function MyDrops({ myAirdrops }: Homeprops) {
     const { address, isConnecting, isDisconnected } = useAccount()
 
-    const logicContract = {
-        address: LogicContractAddress,
-        abi: LogicContract.abi,
-    }
-
     const { data: airdropHashes } = useContractReads({
 
         contracts: [
             {
-                ...logicContract,
+                ...logicContractConfig,
                 functionName: "getAllHashes",
                 chainId: 4690,
             }
@@ -37,7 +31,7 @@ export default function MyDrops({ myAirdrops }: Homeprops) {
         const { data: isMyAirdrop } = useContractReads({
             contracts: [
                 {
-                    ...logicContract,
+                    ...logicContractConfig,
                     functionName: "claimedAirDrops",
                     chainId: 4690,
                     args: [address, drop]
@@ -56,7 +50,7 @@ export default function MyDrops({ myAirdrops }: Homeprops) {
         const { data: Airdrop } = useContractReads({
             contracts: [
                 {
-                    ...logicContract,
+                    ...logicContractConfig,
                     functionName: "airDrops",
                     chainId: 4690,
                     args: [drop]
