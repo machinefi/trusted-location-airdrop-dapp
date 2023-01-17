@@ -1,35 +1,9 @@
-import { Airdrop } from "../types/Airdrop";
 import { Card, CardHeader, CardBody, Heading, Box, Text, Center } from '@chakra-ui/react'
-import { useContractRead, useAccount } from 'wagmi'
-import { logicContractConfig } from '../hooks/hooksConfig'
-import { useEffect, useState } from 'react'
+import { useGetAirdropInfo } from '../hooks/useGetAirdropInfo'
 
 export const PersonalDropsCard = ({ hash }: { hash: string }) => {
-    const { address, isConnecting, isDisconnected } = useAccount()
-    const [myDrop, setMyDrop] = useState<Airdrop | undefined>()
-
-    useContractRead({
-        ...logicContractConfig,
-        functionName: "claimedAirDrops",
-        args: [address, hash],
-        onSuccess: (airdrop: bigint[]) => {
-            const properAirdrop: Airdrop = {
-                lat: airdrop[0].toString(),
-                long: airdrop[1].toString(),
-                max_distance: airdrop[2].toString(),
-                time_from: airdrop[3].toString(),
-                time_to: airdrop[4].toString(),
-                tokens_count: airdrop[5].toString(),
-                tokens_minted: airdrop[6].toString(),
-            }
-            setMyDrop(properAirdrop)
-        }, 
-        onError(error) {
-            console.log('Error', error)
-        },
-    })
-
-
+    const myDrop = useGetAirdropInfo(hash)
+   
     // format the coordinates received from the contract
     function scaleCoordinatesDown(coordInput: number) {
         const result = coordInput / Math.pow(10, 6)

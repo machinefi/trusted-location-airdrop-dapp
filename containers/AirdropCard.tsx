@@ -1,31 +1,11 @@
 import { Card, CardHeader, CardBody, Heading, Box, Text, Button, Center } from '@chakra-ui/react'
-import { useContractRead } from 'wagmi'
-import { logicContractConfig } from '../hooks/hooksConfig'
 import { ClaimVerifier } from './ClaimVerifier'
-import { useEffect, useState } from 'react'
-import { Airdrop } from "../types/Airdrop";
+import { useEffect } from 'react'
+import { useGetAirdropInfo } from '../hooks/useGetAirdropInfo'
 
 export const AirdropCard = ({ hash }: { hash: string }) => {
 
-    const [properDrop, setProperDrop] = useState<Airdrop | undefined>()
-
-    useContractRead({
-        ...logicContractConfig,
-        functionName: "airDrops",
-        args: [hash],
-        onSuccess: (airdrop: bigint[]) => {
-            const properAirdrop: Airdrop = {
-                lat: airdrop[0].toString(),
-                long: airdrop[1].toString(),
-                max_distance: airdrop[2].toString(),
-                time_from: airdrop[3].toString(),
-                time_to: airdrop[4].toString(),
-                tokens_count: airdrop[5].toString(),
-                tokens_minted: airdrop[6].toString(),
-            }
-            setProperDrop(properAirdrop)
-        }
-    })
+    const airdrop = useGetAirdropInfo(hash)
 
     // format the coordinates received from the contract
     function scaleCoordinatesDown(coordInput: number) {
@@ -40,8 +20,8 @@ export const AirdropCard = ({ hash }: { hash: string }) => {
     }
 
     useEffect(() => {
-        console.log("properDrop", properDrop)
-    }, [properDrop])
+        console.log("airdrop", airdrop)
+    }, [airdrop])
 
     return (
         <Card
@@ -66,28 +46,28 @@ export const AirdropCard = ({ hash }: { hash: string }) => {
                 <Box>
 
                     <Heading size='xs' textTransform='uppercase'>
-                        Tokens Left: {properDrop ? `${Number(properDrop.tokens_count) - Number(properDrop.tokens_minted)} of ${properDrop.tokens_count}` : `loading`}
+                        Tokens Left: {airdrop ? `${Number(airdrop.tokens_count) - Number(airdrop.tokens_minted)} of ${airdrop.tokens_count}` : `loading`}
                     </Heading>
 
                     <Text pt='2' fontSize='sm' textTransform='uppercase' >
-                        Latitude: {properDrop ? scaleCoordinatesDown(Number(properDrop.lat)) : "loading"}
+                        Latitude: {airdrop ? scaleCoordinatesDown(Number(airdrop.lat)) : "loading"}
                     </Text>
                     <Text pt='2' fontSize='sm' textTransform='uppercase' >
-                        Longitude: {properDrop ? scaleCoordinatesDown(Number(properDrop.long)) : "loading"}
+                        Longitude: {airdrop ? scaleCoordinatesDown(Number(airdrop.long)) : "loading"}
                     </Text>
                     <Text pt='2' fontSize='sm' textTransform='uppercase' >
-                        Distance: {properDrop ? `${properDrop.max_distance} meters` : `loading`}
+                        Distance: {airdrop ? `${airdrop.max_distance} meters` : `loading`}
                     </Text>
                     <Text pt='2' fontSize='sm' textTransform='uppercase' >
-                        From: {properDrop ? formatDate(Number(properDrop.time_from)) : "loading"}
+                        From: {airdrop ? formatDate(Number(airdrop.time_from)) : "loading"}
                     </Text>
                     <Text pt='2' fontSize='sm' textTransform='uppercase' >
-                        To: {properDrop ? formatDate(Number(properDrop.time_to)) : "loading"}
+                        To: {airdrop ? formatDate(Number(airdrop.time_to)) : "loading"}
                     </Text>
 
                     <Center>
                         {
-                            !!properDrop && <ClaimVerifier airdrop={properDrop} />
+                            !!airdrop && <ClaimVerifier airdrop={airdrop} />
                         }
                     </Center>
 

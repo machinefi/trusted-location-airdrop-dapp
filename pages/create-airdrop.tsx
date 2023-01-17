@@ -6,7 +6,7 @@ import {
 } from '@chakra-ui/react'
 import { Text, Button, Center, Container, Spinner } from '@chakra-ui/react'
 import { useMemo, useState } from 'react'
-import { useContractReads } from 'wagmi'
+import { useContractRead } from 'wagmi'
 import { logicContractConfig } from '../hooks/hooksConfig'
 import { useAirdropCreate } from '../hooks/useAirdropCreate';
 
@@ -24,20 +24,17 @@ export default function Create() {
     const { lat, long, max_distance, time_from, time_to } = formInput;
     const [tokens, setTokens] = useState(0);
 
-    const { data: airdropFee } = useContractReads({
-        contracts: [
-            {
-                ...logicContractConfig,
-                functionName: "calculateFee",
-                args: [tokens],
-                chainId: 4690,
-            }
-        ]
+    const { data: airdropFee } : { data: bigint | undefined } = useContractRead({
+        ...logicContractConfig,
+        functionName: "calculateFee",
+        args: [tokens],
+        chainId: 4690,
+        enabled: !!tokens
     })
 
     const { createAirdrop, isLoading } = useAirdropCreate({
         ...formInput,
-        airdropFee: Number(airdropFee?.[0]?.toString())
+        airdropFee: Number(airdropFee?.toString())
     })
 
     const isValidInput = useMemo(() => {
@@ -45,7 +42,7 @@ export default function Create() {
         // if statements update isValid
         // return isValid
         return true;
-    }, [lat, long, max_distance, time_from, time_to])
+    }, [])
 
     return (
         <Container>
@@ -81,7 +78,7 @@ export default function Create() {
                     setTokens(Number(e.target.value))
                 }} />
                 <FormHelperText mb={6} >Specify how many tokens you would like to create for this Airdrop</FormHelperText>
-                
+
                 <Button
                     size='xs'
                     as='button'

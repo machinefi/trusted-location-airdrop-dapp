@@ -28,6 +28,7 @@ export const useAirdropCreate = ({ lat, long, max_distance, time_from, time_to, 
         overrides: {
             value: Number(airdropFee?.toString()),
         },
+        enabled: !!lat && !!long && !!max_distance && !!time_from && !!time_to && !!tokens_count && !!airdropFee
     })
 
     const { data, isLoading, isSuccess, write } = useContractWrite({ ...config, onSuccess: () => router.push("/") })
