@@ -8,8 +8,9 @@ import moment from "moment";
 import { Airdrop } from "../types/Airdrop";
 import { SiweMessage } from "siwe";
 import { iotexTestnet } from "wagmi/chains";
-import { Button } from '@chakra-ui/react'
+import { Button, Spinner } from '@chakra-ui/react'
 import { Location } from "../types/Location";
+import { ConnectButton } from "./User/ConnectButton";
 
 const GEOSTREAM_API = "https://geo-test.w3bstream.com/api/pol";
 
@@ -132,6 +133,10 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
         signMessage({ message })
     }
 
+    if (!isConnected) {
+        return <ConnectButton />
+    }
+
     return (
         <Button
             size='xs'
@@ -147,11 +152,14 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
                 color: 'black'
             }}
             mt={12}
-            disabled={!isConnected}
+            disabled={isLoading || isSuccess || !claimAirdrop}
             onClick={handleClaim}
         >
             {
-                isConnected ? `Claim` : `Connect Wallet`
+                isLoading ? <Spinner size='xs' /> : `Claim`
+            }
+            {
+                isSuccess && ` (Success)`
             }
         </Button>
     )
