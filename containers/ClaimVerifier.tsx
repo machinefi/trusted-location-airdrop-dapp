@@ -152,7 +152,7 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
                 color: 'black'
             }}
             mt={12}
-            disabled={isLoading || isSuccess || !claimAirdrop}
+            disabled={isLoading || isSuccess}
             onClick={handleClaim}
         >
             {
