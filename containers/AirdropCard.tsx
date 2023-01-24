@@ -2,22 +2,12 @@ import { Card, CardHeader, CardBody, Heading, Box, Text, Button, Center } from '
 import { ClaimVerifier } from './ClaimVerifier'
 import { useEffect } from 'react'
 import { useGetAirdropInfo } from '../hooks/useGetAirdropInfo'
+import { formatDate } from '../utils/formatDate'
+import { scaleCoordinatesDown } from '../utils/scaleCoordinates'
 
 export const AirdropCard = ({ hash }: { hash: string }) => {
 
     const airdrop = useGetAirdropInfo(hash)
-
-    // format the coordinates received from the contract
-    function scaleCoordinatesDown(coordInput: number) {
-        const result = coordInput / Math.pow(10, 6)
-        return result
-    }
-
-    // format date
-    function formatDate(input: number) {
-        let date = new Date(input * 1000).toLocaleDateString()
-        return date;
-    }
 
     useEffect(() => {
         console.log("airdrop", airdrop)

@@ -11,20 +11,10 @@ import { iotexTestnet } from "wagmi/chains";
 import { Button, Spinner } from '@chakra-ui/react'
 import { Location } from "../types/Location";
 import { ConnectButton } from "./User/ConnectButton";
+import { formatDate } from "../utils/formatDate";
+import { scaleCoordinatesDown } from "../utils/scaleCoordinates";
 
 const GEOSTREAM_API = "https://geo-test.w3bstream.com/api/pol";
-
-// format the coordinates received from the contract
-function scaleCoordinatesDown(coordInput: number) {
-    const result = coordInput / Math.pow(10, 6)
-    return result
-}
-
-// format date
-function formatDate(input: number) {
-    let date = new Date(input * 1000).toLocaleDateString()
-    return date;
-}
 
 function createSiweMessage(
     address: string,
