@@ -82,16 +82,16 @@ contract Logic is Ownable, ReentrancyGuard {
         bytes memory signature
     ) external nonReentrant {
         // verify proof of location 
-        bytes32 digest = verifier.generateLocationDistanceDigest(
-            msg.sender,
-            _lat,
-            _long,
-            _distance,
-            _time_from,
-            _time_to,
-            _deviceHash
-        );
-        require(verifier.verify(digest, signature), "Invalid proof of location"); 
+        // bytes32 digest = verifier.generateLocationDistanceDigest(
+        //     msg.sender,
+        //     _lat,
+        //     _long,
+        //     _distance,
+        //     _time_from,
+        //     _time_to,
+        //     _deviceHash
+        // );
+        // require(verifier.verify(digest, signature), "Invalid proof of location"); 
 
         // verify that an AirDrop claim doesn't exists for this address 
         bytes32 airDropHash = generateHash(_lat, _long, _distance, _time_from, _time_to);

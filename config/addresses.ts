@@ -1,2 +1,2 @@
-export const LocationNFTAddress = "0x9A7BA557D7638B0Aa974187018e8713E3542091D";
-export const LogicContractAddress = "0xAEB4c84e4fBaCcB7C87D8624C11FC9903B495229";
+export const LocationNFTAddress = "0xd2bc5e57112B86c43274A687B38382868f434596";
+export const LogicContractAddress = "0xa7747ef62C4c645173aD4fdD2159c84E6596eEf1";

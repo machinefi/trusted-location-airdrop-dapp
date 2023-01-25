@@ -101,6 +101,7 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
             console.log("Body: ", body);
         });
         console.log(`Query result.`, response);
+        console.log("type of response", typeof response)
         if (typeof response === "object" && response.data.result.data.length > 0) {
             setVerifiedLocations([...response.data.result.data])
             setIsReadyToClaim(true)
@@ -111,6 +112,7 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
     }
 
     function handleClaim() {
+        console.log("firing the handleclaim function...")
         if (!address) return
         let message = createSiweMessage(
             address,
@@ -120,6 +122,7 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
             airdrop.time_from,
             airdrop.time_to
         );
+        console.log("message", message)
         signMessage({ message })
     }
 
