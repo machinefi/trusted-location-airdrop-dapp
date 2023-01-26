@@ -113,7 +113,7 @@ contract Logic is Ownable, ReentrancyGuard {
         emit Claimed(msg.sender, airDropHash);
 
         // update the number of tokens minted for this airdrop
-        airDrop.tokens_minted++;
+        airDrops[airDropHash].tokens_minted++;
     }
 
     function setFeeReceiver(address _receiver) public onlyOwner {

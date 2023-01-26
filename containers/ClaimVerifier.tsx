@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import { useSignMessage, useAccount } from 'wagmi'
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -37,7 +36,6 @@ function createSiweMessage(
 }
 
 export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
-    const router = useRouter()
     const { address, isConnected } = useAccount()
 
     const [verifiedLocations, setVerifiedLocations] = useState<VerifiedLocation[]>([]);
@@ -56,9 +54,11 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
 
     useEffect(() => {
         if (isReadyToClaim) {
-            claimAirdrop?.()
+            setTimeout(() => {
+                claimAirdrop?.()
+            }, 4000)
         }
-    }, [claimAirdrop, isReadyToClaim])
+    }, [isReadyToClaim])
 
     const locations: Location[] = [
         {
@@ -72,10 +72,6 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
 
     const { signMessage } = useSignMessage({
         onSuccess: async (data, variables) => {
-            console.log("locations: ", locations)
-            console.log("address: ", address)
-            console.log("signature: ", data)
-            console.log("message: ", variables.message)
             await queryPolAPI(locations, address as `0x${string}`, data, variables.message)
         }
     })
@@ -101,7 +97,6 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
             console.log("Body: ", body);
         });
         console.log(`Query result.`, response);
-        console.log("type of response", typeof response)
         if (typeof response === "object" && response.data.result.data.length > 0) {
             setVerifiedLocations([...response.data.result.data])
             setIsReadyToClaim(true)
@@ -112,7 +107,6 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
     }
 
     function handleClaim() {
-        console.log("firing the handleclaim function...")
         if (!address) return
         let message = createSiweMessage(
             address,
@@ -122,7 +116,6 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
             airdrop.time_from,
             airdrop.time_to
         );
-        console.log("message", message)
         signMessage({ message })
     }
 

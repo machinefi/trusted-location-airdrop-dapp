@@ -6,7 +6,6 @@ const Home = dynamic(() => import("../containers/Home"), {
   ssr: false
 })
 
-
 export default function HomePage() {
 
   return (

@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardBody, Heading, Box, Text, Button, Center } from '@chakra-ui/react'
+import { Card, CardHeader, CardBody, Heading, Box, Text, Center } from '@chakra-ui/react'
 import { ClaimVerifier } from './ClaimVerifier'
 import { useEffect } from 'react'
 import { useGetAirdropInfo } from '../hooks/useGetAirdropInfo'
