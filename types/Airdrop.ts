@@ -1,9 +1,3 @@
-// export type Airdrop = {
-//     id: string,
-//     title: string,
-//     description: string
-// }
-
 export type Airdrop = {
     lat: string,
     long: string,

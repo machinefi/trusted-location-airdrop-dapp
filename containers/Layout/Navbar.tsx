@@ -9,8 +9,8 @@ export const Navbar = () => {
         <div >
              <Flex align="space-between" justify="end" gap={6} m={14} >
                 <Text as='b'><Link href="/">Home</Link></Text>
-                <Text as='b'><Link href="/MyDrops">My Drops</Link></Text>
-                <Text as='b'><Link href="/Create">Create</Link></Text>
+                <Text as='b'><Link href="/my-drops">My Drops</Link></Text>
+                <Text as='b'><Link href="/create-airdrop">Create</Link></Text>
                 <UserWallet />
             </Flex>
         </div>

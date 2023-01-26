@@ -5,10 +5,9 @@ import {
     Input
 } from '@chakra-ui/react'
 import { Text, Button, Center, Container, Spinner } from '@chakra-ui/react'
-import { useEffect, useMemo, useState } from 'react'
-import { useContractReads } from 'wagmi'
-import { LogicContractAddress } from "../config/addresses"
-import LogicContract from "../artifacts/contracts/Logic.sol/Logic.json"
+import { useMemo, useState } from 'react'
+import { useContractRead } from 'wagmi'
+import { logicContractConfig } from '../hooks/hooksConfig'
 import { useAirdropCreate } from '../hooks/useAirdropCreate';
 
 
@@ -25,25 +24,17 @@ export default function Create() {
     const { lat, long, max_distance, time_from, time_to } = formInput;
     const [tokens, setTokens] = useState(0);
 
-    const logicContract = {
-        address: LogicContractAddress,
-        abi: LogicContract.abi,
-    }
-
-    const { data: airdropFee } = useContractReads({
-        contracts: [
-            {
-                ...logicContract,
-                functionName: "calculateFee",
-                args: [tokens],
-                chainId: 4690,
-            }
-        ]
+    const { data: airdropFee } : { data: bigint | undefined } = useContractRead({
+        ...logicContractConfig,
+        functionName: "calculateFee",
+        args: [tokens],
+        chainId: 4690,
+        enabled: !!tokens
     })
 
     const { createAirdrop, isLoading } = useAirdropCreate({
         ...formInput,
-        airdropFee: Number(airdropFee?.[0]?.toString())
+        airdropFee: Number(airdropFee?.toString())
     })
 
     const isValidInput = useMemo(() => {
@@ -51,7 +42,7 @@ export default function Create() {
         // if statements update isValid
         // return isValid
         return true;
-    }, [lat, long, max_distance, time_from, time_to])
+    }, [])
 
     return (
         <Container>
@@ -87,7 +78,7 @@ export default function Create() {
                     setTokens(Number(e.target.value))
                 }} />
                 <FormHelperText mb={6} >Specify how many tokens you would like to create for this Airdrop</FormHelperText>
-                
+
                 <Button
                     size='xs'
                     as='button'
@@ -101,7 +92,7 @@ export default function Create() {
                     }}
                     mb={12}
                     disabled={isLoading || !createAirdrop || !isValidInput}
-                    onClick={() => createAirdrop()}
+                    onClick={() => createAirdrop?.()}
                 >
                     {
                         isLoading ? <Spinner size='xs' /> : `Submit`

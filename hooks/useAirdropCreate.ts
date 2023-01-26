@@ -1,7 +1,8 @@
 import { useContractWrite, usePrepareContractWrite } from 'wagmi'
-import { LogicContractAddress } from "../config/addresses"
-import LogicContract from "../artifacts/contracts/Logic.sol/Logic.json"
+import { logicContractConfig } from "./hooksConfig"
 import { useRouter } from "next/router";
+import { scaleCoordinatesUp } from '../utils/scaleCoordinates';
+import { _formatDate } from '../utils/formatDate';
 
 type AirdropCreateProps = {
     lat: number,
@@ -16,8 +17,7 @@ type AirdropCreateProps = {
 export const useAirdropCreate = ({ lat, long, max_distance, time_from, time_to, tokens_count, airdropFee }: AirdropCreateProps) => {
     const router = useRouter();
     const { config } = usePrepareContractWrite({
-        address: LogicContractAddress,
-        abi: LogicContract.abi,
+        ...logicContractConfig,
         functionName: 'addAirDrop',
         args: [
             scaleCoordinatesUp(Number(lat)),
@@ -30,22 +30,10 @@ export const useAirdropCreate = ({ lat, long, max_distance, time_from, time_to, 
         overrides: {
             value: Number(airdropFee?.toString()),
         },
+        enabled: !!lat && !!long && !!max_distance && !!time_from && !!time_to && !!tokens_count && !!airdropFee
     })
 
-    const { data, isLoading, isSuccess, write } = useContractWrite({...config, onSuccess: () => router.push("/") })
-    
+    const { data, isLoading, isSuccess, write } = useContractWrite({ ...config, onSuccess: () => router.push("/") })
+
     return { data, isLoading, isSuccess, createAirdrop: write };
-}
-
-// format date in seconds
-function _formatDate(dateInput: number) {
-    // const date = new Date(dateInput);
-    const timestamp = dateInput / 1000;
-    return timestamp;
-}
-
-// format the coordinates to send to the contract
-function scaleCoordinatesUp(coordInput: number) { // send to the contract
-    const result = Math.round(coordInput * Math.pow(10, 6))
-    return result
 }
