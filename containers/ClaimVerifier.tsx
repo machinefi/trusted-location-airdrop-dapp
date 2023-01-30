@@ -56,7 +56,7 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
         if (isReadyToClaim) {
             setTimeout(() => {
                 claimAirdrop?.()
-            }, 4000)
+            }, 8000)
         }
     }, [isReadyToClaim])
 

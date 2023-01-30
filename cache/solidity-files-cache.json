@@ -517,8 +517,8 @@
       ]
     },
     "/Users/laurentwo/Desktop/geostream/geo_next/contracts/Logic.sol": {
-      "lastModificationDate": 1674744495551,
-      "contentHash": "a4c51138ec5a153835f02d5270051292",
+      "lastModificationDate": 1675104659484,
+      "contentHash": "66046c3e5fa98ae9aec5d1cb4044f55d",
       "sourceName": "contracts/Logic.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -557,8 +557,8 @@
       ]
     },
     "/Users/laurentwo/Desktop/geostream/geo_next/contracts/VerifierInterface.sol": {
-      "lastModificationDate": 1672087048609,
-      "contentHash": "4c24f9141e8ed18aa07d9fffb3728033",
+      "lastModificationDate": 1675104675093,
+      "contentHash": "2c4b61d058b53bffa4beb94ec1697205",
       "sourceName": "contracts/VerifierInterface.sol",
       "solcConfig": {
         "version": "0.8.17",
