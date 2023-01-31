@@ -21,9 +21,9 @@ export const useClaimDrop = ({ scaled_latitude, scaled_longitude, distance, from
         ],
         enabled: isReadyToClaim,
         overrides: {
-            value: ethers.utils.parseEther('1'),
-            gasPrice: ethers.utils.parseUnits('1000', 'gwei'),
-            gasLimit: BigNumber.from(1000000)
+            value: ethers.utils.parseEther('2'),
+            // gasPrice: ethers.utils.parseUnits('1000', 'gwei'),
+            // gasLimit: BigNumber.from(10000000)
         },
         onError: ((error) => console.log("error", error))
     })

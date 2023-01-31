@@ -87,9 +87,9 @@ contract Logic is Ownable, ReentrancyGuard {
             _lat,
             _long,
             _distance,
+            _deviceHash,
             _time_from,
-            _time_to,
-            _deviceHash
+            _time_to
         );
         require(verifier.verify{value: msg.value}(digest, signature), "Invalid proof of location"); 
 

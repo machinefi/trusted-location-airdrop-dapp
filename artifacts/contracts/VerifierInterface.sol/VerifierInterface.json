@@ -55,6 +55,11 @@
           "type": "uint256"
         },
         {
+          "internalType": "bytes32",
+          "name": "deviceHash",
+          "type": "bytes32"
+        },
+        {
           "internalType": "uint256",
           "name": "time_from",
           "type": "uint256"
@@ -63,11 +68,6 @@
           "internalType": "uint256",
           "name": "time_to",
           "type": "uint256"
-        },
-        {
-          "internalType": "bytes32",
-          "name": "deviceHash",
-          "type": "bytes32"
         }
       ],
       "name": "generateLocationDistanceDigest",

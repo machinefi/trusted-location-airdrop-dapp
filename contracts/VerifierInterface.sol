@@ -11,9 +11,9 @@ interface VerifierInterface {
         int256 lat,
         int256 long,
         uint256 distance,
+        bytes32 deviceHash,
         uint256 time_from,
-        uint256 time_to,
-        bytes32 deviceHash
+        uint256 time_to
     ) external view returns (bytes32);
 
     function generateDeviceDigest(
