@@ -14,8 +14,10 @@ const { chains, provider } = configureChains(
             rpc: (chain) => {
                 if (
                     chain.id !== iotexTestnet.id
-                )
+                ) {
                     return null;
+                }
+
                 return { http: chain.rpcUrls.default.http[0] }
             },
         }),
