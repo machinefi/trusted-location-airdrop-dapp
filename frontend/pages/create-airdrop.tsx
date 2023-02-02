@@ -7,7 +7,7 @@ import {
 import { Text, Button, Center, Container, Spinner } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 import { useContractRead } from "wagmi";
-import { locationAirdrop } from "../hooks/hooksConfig";
+import { LocationAirdrop } from "../config/contracts";
 import { useAirdropCreate } from "../hooks/useAirdropCreate";
 
 export default function Create() {
@@ -23,7 +23,7 @@ export default function Create() {
   const [tokens, setTokens] = useState(0);
 
   const { data: airdropFee }: { data: bigint | undefined } = useContractRead({
-    ...locationAirdrop,
+    ...LocationAirdrop,
     functionName: "calculateFee",
     args: [tokens],
     chainId: 4690,

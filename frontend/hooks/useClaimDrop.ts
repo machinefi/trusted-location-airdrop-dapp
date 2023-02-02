@@ -3,7 +3,7 @@ import {
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { locationAirdrop } from "./hooksConfig";
+import { LocationAirdrop } from "../config/contracts";
 import { useRouter } from "next/router";
 import { VerifiedLocation } from "../types/VerifiedLocation";
 import { useToast } from "@chakra-ui/react";
@@ -21,7 +21,7 @@ export const useClaimDrop = ({
 }: VerifiedLocation & { isReadyToClaim: boolean }) => {
   const router = useRouter();
   const { config } = usePrepareContractWrite({
-    ...locationAirdrop,
+    ...LocationAirdrop,
     functionName: "claim",
     args: [
       scaled_latitude,
