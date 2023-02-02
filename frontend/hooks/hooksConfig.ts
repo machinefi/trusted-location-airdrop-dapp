@@ -1,7 +1,6 @@
-import { LogicContractAddress } from "../config/addresses";
-import LogicContract from "../../artifacts/contracts/Logic.sol/Logic.json";
+import LocationAirdrop from "../contracts/LocationAirdrop.json";
 
-export const logicContractConfig = {
-  address: LogicContractAddress,
-  abi: LogicContract.abi,
+export const locationAirdrop = {
+  address: LocationAirdrop.address,
+  abi: LocationAirdrop.abi,
 };

@@ -1,5 +1,5 @@
 import { useContractRead } from "wagmi";
-import { logicContractConfig } from "./hooksConfig";
+import { locationAirdrop } from "./hooksConfig";
 import { useState } from "react";
 import { Airdrop } from "../types/Airdrop";
 
@@ -7,7 +7,7 @@ export const useGetAirdropInfo = (hash: string) => {
   const [properDrop, setProperDrop] = useState<Airdrop | undefined>();
 
   useContractRead({
-    ...logicContractConfig,
+    ...locationAirdrop,
     functionName: "airDrops",
     args: [hash],
     onSuccess: (airdrop: bigint[]) => {

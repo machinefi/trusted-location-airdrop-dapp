@@ -1,5 +1,5 @@
 import { useContractWrite, usePrepareContractWrite } from "wagmi";
-import { logicContractConfig } from "./hooksConfig";
+import { locationAirdrop } from "./hooksConfig";
 import { useRouter } from "next/router";
 import { scaleCoordinatesUp } from "../utils/scaleCoordinates";
 import { _formatDate } from "../utils/formatDate";
@@ -25,7 +25,7 @@ export const useAirdropCreate = ({
 }: AirdropCreateProps) => {
   const router = useRouter();
   const { config } = usePrepareContractWrite({
-    ...logicContractConfig,
+    ...locationAirdrop,
     functionName: "addAirDrop",
     args: [
       scaleCoordinatesUp(Number(lat)),
