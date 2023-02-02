@@ -1,12 +1,12 @@
 import { useContractRead, useAccount } from "wagmi";
-import { logicContractConfig } from "../hooks/hooksConfig";
+import { locationAirdrop } from "../hooks/hooksConfig";
 import { PersonalDropsCard } from "./PersonalDropsCard";
 
 export const UserClaimedDrop = ({ hash }: { hash: string }) => {
   const { address } = useAccount();
 
   const { data: isClaimed } = useContractRead({
-    ...logicContractConfig,
+    ...locationAirdrop,
     functionName: "claimedAirDrops",
     args: [address, hash],
     enabled: !!address && !!hash,
