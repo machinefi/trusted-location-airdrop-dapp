@@ -23,4 +23,5 @@ const func: DeployFunction = async ({ getUnnamedAccounts, deployments }) => {
   });
 };
 export default func;
-func.tags = ["LocationAirdrop"];
+func.dependencies = ["location-nft"];
+func.tags = ["location-airdrop"];
