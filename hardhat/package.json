@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "hardhat test",
-    "compile": "hardhat compile"
+    "compile": "hardhat compile",
+    "deploy": "hardhat deploy"
   },
   "repository": {
     "type": "git",
@@ -23,8 +24,11 @@
   "homepage": "https://github.com/GiupiDeLuca/geo_next#readme",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.1",
+    "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers@^0.3.0-beta.13",
     "@openzeppelin/contracts": "^4.8.0",
     "dotenv": "^16.0.3",
-    "hardhat": "^2.12.6"
+    "ethers": "^5.7.2",
+    "hardhat": "^2.12.6",
+    "hardhat-deploy": "^0.11.22"
   }
 }
