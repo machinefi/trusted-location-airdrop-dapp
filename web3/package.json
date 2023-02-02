@@ -6,7 +6,8 @@
   "scripts": {
     "test": "hardhat test",
     "compile": "hardhat compile",
-    "deploy": "hardhat deploy"
+    "deploy": "hardhat deploy",
+    "deploy:testnet": "hardhat deploy --network testnet"
   },
   "repository": {
     "type": "git",

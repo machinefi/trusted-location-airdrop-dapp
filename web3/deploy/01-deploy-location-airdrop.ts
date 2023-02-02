@@ -3,12 +3,10 @@ import { DeployFunction } from "hardhat-deploy/types";
 import constants from "../constants";
 
 const func: DeployFunction = async ({ getUnnamedAccounts, deployments }) => {
-  const { deploy, log } = deployments;
+  const { deploy } = deployments;
   const [deployer] = await getUnnamedAccounts();
 
   const locationNFT = await deployments.get("LocationNFT");
-
-  log(`Deploying LocationAirdrop...`);
 
   await deploy("LocationAirdrop", {
     from: deployer,
