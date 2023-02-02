@@ -1,7 +1,7 @@
 import { Text, Center } from "@chakra-ui/react";
 import { useGetAirdropHashes } from "../hooks/useGetAirdropHashes";
 import { Grid } from "@chakra-ui/react";
-import { UserClaimedDrop } from "../containers/UserClaimedDrop";
+import { UserClaimedDrop } from "../components/UserClaimedDrop";
 
 export default function MyDrops() {
   const { airdropHashes } = useGetAirdropHashes();

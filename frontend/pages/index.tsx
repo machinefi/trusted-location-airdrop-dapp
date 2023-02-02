@@ -2,7 +2,7 @@ import Head from "next/head";
 import { Text, Center } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 
-const Home = dynamic(() => import("../containers/Home"), {
+const Home = dynamic(() => import("../components/Home"), {
   ssr: false,
 });
 

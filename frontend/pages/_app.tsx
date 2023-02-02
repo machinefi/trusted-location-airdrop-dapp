@@ -5,7 +5,7 @@ import {
   type ThemeConfig,
 } from "@chakra-ui/react";
 import wagmiClient from "../wagmiClient";
-import { Layout } from "../containers/Layout/Layout";
+import { Layout } from "../components/Layout/Layout";
 
 function MyApp({ Component, pageProps }: any) {
   const config: ThemeConfig = {
