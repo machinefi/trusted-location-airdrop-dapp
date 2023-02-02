@@ -1,6 +1,7 @@
-In this directory is 
+In this directory is a smart contract part of the project
 
 ## Getting Started
 
-First, clone the repo. Review the content of the repo. You'll see to subfolders ***frontend*** and ***hardhat***.
-
+1. Add pk
+2. Compile and test contracts
+3. Deploy contracts
