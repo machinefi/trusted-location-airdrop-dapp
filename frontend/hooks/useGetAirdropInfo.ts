@@ -4,20 +4,20 @@ import { useState } from "react";
 import { Airdrop } from "../types/Airdrop";
 
 export const useGetAirdropInfo = (hash: string) => {
-  const [properDrop, setProperDrop] = useState<Airdrop | undefined>();
+  const [airdrop, setAirdropDrop] = useState<Airdrop | undefined>();
 
   useContractRead({
     ...LocationAirdrop,
     functionName: "airDrops",
     args: [hash],
-    onSuccess: (airdrop: bigint[]) => {
-      const properAirdrop = parseDrop(airdrop);
-      setProperDrop(properAirdrop);
+    onSuccess: (rawAirdrop: bigint[]) => {
+      const properAirdrop = parseDrop(rawAirdrop);
+      setAirdropDrop(properAirdrop);
     },
     enabled: !!hash,
   });
 
-  return properDrop;
+  return airdrop;
 };
 
 const parseDrop = (airdrop: bigint[]): Airdrop => ({
