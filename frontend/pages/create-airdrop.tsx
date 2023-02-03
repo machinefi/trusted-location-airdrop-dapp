@@ -117,16 +117,6 @@ export default function Create() {
         </FormHelperText>
 
         <Button
-          size="xs"
-          as="button"
-          color="white"
-          fontWeight="bold"
-          borderRadius="md"
-          bgGradient="linear(to-l, #7928CA, #FF0080)"
-          _hover={{
-            bgGradient: "linear(red.100 0%, orange.100 25%, yellow.100 50%)",
-            color: "black",
-          }}
           mb={12}
           disabled={isLoading || !createAirdrop || !isValidInput}
           onClick={() => createAirdrop?.()}
