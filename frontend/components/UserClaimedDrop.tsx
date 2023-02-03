@@ -1,6 +1,7 @@
 import { useContractRead, useAccount } from "wagmi";
 import { LocationAirdrop } from "../config/contracts";
-import { PersonalDropsCard } from "./PersonalDropsCard";
+import AirdropCard from "./airdrop/AirdropCard";
+import { PersonalDropCardBody } from "./airdrop/PersonalDropCardBody";
 
 export const UserClaimedDrop = ({ hash }: { hash: string }) => {
   const { address } = useAccount();
@@ -16,7 +17,11 @@ export const UserClaimedDrop = ({ hash }: { hash: string }) => {
   });
 
   if (isClaimed) {
-    return <PersonalDropsCard hash={hash} />;
+    return (
+      <AirdropCard hash={hash}>
+        <PersonalDropCardBody hash={hash} />
+      </AirdropCard>
+    );
   }
 
   return null;
