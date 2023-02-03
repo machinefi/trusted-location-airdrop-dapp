@@ -8,20 +8,16 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { ClaimVerifier } from "./ClaimVerifier";
-import { useEffect } from "react";
 import { useGetAirdropInfo } from "../hooks/useGetAirdropInfo";
-import { formatDate } from "../utils/formatDate";
+import { secondsToLocaleDataString } from "../utils/formatDate";
 import { scaleCoordinatesDown } from "../utils/scaleCoordinates";
 
 export const AirdropCard = ({ hash }: { hash: string }) => {
   const airdrop = useGetAirdropInfo(hash);
 
-  useEffect(() => {
-    console.log("airdrop", airdrop);
-  }, [airdrop]);
-
   return (
     <Card
+      as="article"
       maxW="sm"
       _hover={{
         bgGradient: "linear(to-l, #7928CA, #FF0080)",
@@ -48,21 +44,22 @@ export const AirdropCard = ({ hash }: { hash: string }) => {
           </Heading>
 
           <Text pt="2" fontSize="sm" textTransform="uppercase">
-            Latitude:{" "}
-            {airdrop ? scaleCoordinatesDown(Number(airdrop.lat)) : "loading"}
+            Latitude: {airdrop ? scaleCoordinatesDown(airdrop.lat) : "loading"}
           </Text>
           <Text pt="2" fontSize="sm" textTransform="uppercase">
             Longitude:{" "}
-            {airdrop ? scaleCoordinatesDown(Number(airdrop.long)) : "loading"}
+            {airdrop ? scaleCoordinatesDown(airdrop.long) : "loading"}
           </Text>
           <Text pt="2" fontSize="sm" textTransform="uppercase">
             Distance: {airdrop ? `${airdrop.max_distance} meters` : `loading`}
           </Text>
           <Text pt="2" fontSize="sm" textTransform="uppercase">
-            From: {airdrop ? formatDate(Number(airdrop.time_from)) : "loading"}
+            From:{" "}
+            {airdrop ? secondsToLocaleDataString(airdrop.time_from) : "loading"}
           </Text>
           <Text pt="2" fontSize="sm" textTransform="uppercase">
-            To: {airdrop ? formatDate(Number(airdrop.time_to)) : "loading"}
+            To:{" "}
+            {airdrop ? secondsToLocaleDataString(airdrop.time_to) : "loading"}
           </Text>
 
           <Center>{!!airdrop && <ClaimVerifier airdrop={airdrop} />}</Center>

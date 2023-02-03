@@ -2,7 +2,7 @@ import { useContractWrite, usePrepareContractWrite } from "wagmi";
 import { LocationAirdrop } from "../config/contracts";
 import { useRouter } from "next/router";
 import { scaleCoordinatesUp } from "../utils/scaleCoordinates";
-import { _formatDate } from "../utils/formatDate";
+import { millisecondsToSeconds } from "../utils/formatDate";
 
 type AirdropCreateProps = {
   lat: number;
@@ -31,8 +31,8 @@ export const useAirdropCreate = ({
       scaleCoordinatesUp(Number(lat)),
       scaleCoordinatesUp(Number(long)),
       Number(max_distance),
-      _formatDate(time_from),
-      _formatDate(time_to),
+      millisecondsToSeconds(time_from),
+      millisecondsToSeconds(time_to),
       tokens_count,
     ],
     overrides: {

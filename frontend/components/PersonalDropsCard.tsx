@@ -8,7 +8,7 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { useGetAirdropInfo } from "../hooks/useGetAirdropInfo";
-import { formatDate } from "../utils/formatDate";
+import { secondsToLocaleDataString } from "../utils/formatDate";
 import { scaleCoordinatesDown } from "../utils/scaleCoordinates";
 
 export const PersonalDropsCard = ({ hash }: { hash: string }) => {
@@ -33,21 +33,20 @@ export const PersonalDropsCard = ({ hash }: { hash: string }) => {
       <CardBody>
         <Box>
           <Text pt="2" fontSize="sm" textTransform="uppercase">
-            Latitude:{" "}
-            {myDrop ? scaleCoordinatesDown(Number(myDrop.lat)) : "loading"}
+            Latitude: {myDrop ? scaleCoordinatesDown(myDrop.lat) : "loading"}
           </Text>
           <Text pt="2" fontSize="sm" textTransform="uppercase">
-            Longitude:{" "}
-            {myDrop ? scaleCoordinatesDown(Number(myDrop.long)) : "loading"}
+            Longitude: {myDrop ? scaleCoordinatesDown(myDrop.long) : "loading"}
           </Text>
           <Text pt="2" fontSize="sm" textTransform="uppercase">
             Distance: {myDrop ? `${myDrop.max_distance} meters` : `loading`}
           </Text>
           <Text pt="2" fontSize="sm" textTransform="uppercase">
-            From: {myDrop ? formatDate(Number(myDrop.time_from)) : "loading"}
+            From:{" "}
+            {myDrop ? secondsToLocaleDataString(myDrop.time_from) : "loading"}
           </Text>
           <Text pt="2" fontSize="sm" textTransform="uppercase">
-            To: {myDrop ? formatDate(Number(myDrop.time_to)) : "loading"}
+            To: {myDrop ? secondsToLocaleDataString(myDrop.time_to) : "loading"}
           </Text>
         </Box>
       </CardBody>
