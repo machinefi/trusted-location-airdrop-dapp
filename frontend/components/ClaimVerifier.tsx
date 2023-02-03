@@ -1,5 +1,4 @@
 import { useSignMessage, useAccount } from "wagmi";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useClaimDrop } from "../hooks/useClaimDrop";
 import { VerifiedLocation } from "../types/VerifiedLocation";
@@ -8,9 +7,7 @@ import { Button, Spinner } from "@chakra-ui/react";
 import { Location } from "../types/Location";
 import { ConnectButton } from "./User/ConnectButton";
 import constants from "../config/constants";
-import createSiweMessage from "../npm-package/generateSiweMessage";
-
-const { GEOSTREAM_API } = constants;
+import { createSiweMessage, getLocationProof } from "../npm-package/";
 
 export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
   const { address, isConnected } = useAccount();
@@ -68,18 +65,15 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
     signature: string,
     message: string | Uint8Array
   ) {
-    const body = {
-      signature,
-      message,
-      owner: address,
+    const verifiedLocations = await getLocationProof(
       locations,
-    };
-    const response = await axios.post(GEOSTREAM_API, body).catch((error) => {
-      console.log(error);
-    });
+      address,
+      signature,
+      message
+    );
 
-    if (typeof response === "object" && response.data.result.data.length > 0) {
-      setVerifiedLocations([...response.data.result.data]);
+    if (!!verifiedLocations && verifiedLocations.length > 0) {
+      setVerifiedLocations([...verifiedLocations]);
       setIsReadyToClaim(true);
     } else {
       setVerifiedLocations([]);
