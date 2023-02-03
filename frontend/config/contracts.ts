@@ -1,3 +1,5 @@
 import * as contracts from "../contracts/contracts.json";
 
-export const { LocationAirdrop } = contracts["4690"][0].contracts;
+const IOTEX_TESTNET = "4690";
+
+export const { LocationAirdrop } = contracts[IOTEX_TESTNET][0].contracts;

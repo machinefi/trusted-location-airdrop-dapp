@@ -7,6 +7,7 @@ import {
 import { Text, Button, Center, Container, Spinner } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
 import { useContractRead } from "wagmi";
+import { iotexTestnet } from "wagmi/chains";
 import { LocationAirdrop } from "../config/contracts";
 import { useAirdropCreate } from "../hooks/useAirdropCreate";
 
@@ -26,7 +27,7 @@ export default function Create() {
     ...LocationAirdrop,
     functionName: "calculateFee",
     args: [tokens],
-    chainId: 4690,
+    chainId: iotexTestnet.id,
     enabled: !!tokens,
   });
 

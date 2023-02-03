@@ -1,4 +1,5 @@
 import { useContractRead } from "wagmi";
+import { iotexTestnet } from "wagmi/chains";
 import { LocationAirdrop } from "../config/contracts";
 
 export const useGetAirdropHashes = () => {
@@ -6,7 +7,7 @@ export const useGetAirdropHashes = () => {
     useContractRead({
       ...LocationAirdrop,
       functionName: "getAllHashes",
-      chainId: 4690,
+      chainId: iotexTestnet.id,
       onSuccess: (data) => console.log("data", data),
     });
 
