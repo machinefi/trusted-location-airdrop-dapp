@@ -3,45 +3,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useClaimDrop } from "../hooks/useClaimDrop";
 import { VerifiedLocation } from "../types/VerifiedLocation";
-import moment from "moment";
 import { Airdrop } from "../types/Airdrop";
-import { SiweMessage } from "siwe";
-import { iotexTestnet } from "wagmi/chains";
 import { Button, Spinner } from "@chakra-ui/react";
 import { Location } from "../types/Location";
 import { ConnectButton } from "./User/ConnectButton";
-import { formatDate } from "../utils/formatDate";
-import { scaleCoordinatesDown } from "../utils/scaleCoordinates";
+import constants from "../config/constants";
+import createSiweMessage from "../npm-package/generateSiweMessage";
 
-const GEOSTREAM_API = "https://geo-test.w3bstream.com/api/pol";
-
-function createSiweMessage(
-  address: string,
-  latitude: string,
-  longitude: string,
-  distance: string,
-  from: string,
-  to: string
-) {
-  const message = new SiweMessage({
-    domain: globalThis.location.host,
-    address: address,
-    statement: `The application will know if you were located in the following region with latitude: ${scaleCoordinatesDown(
-      Number(latitude)
-    )}, longitude: ${scaleCoordinatesDown(
-      Number(longitude)
-    )}, and within a maximum distance of ${Number(
-      distance
-    )} meters, between ${formatDate(Number(from))}, and ${formatDate(
-      Number(to)
-    )}`,
-    uri: globalThis.location.origin,
-    version: "1",
-    chainId: iotexTestnet.id,
-    expirationTime: moment().add(5, "minutes").toISOString(),
-  });
-  return message.prepareMessage();
-}
+const { GEOSTREAM_API } = constants;
 
 export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
   const { address, isConnected } = useAccount();
@@ -105,15 +74,10 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
       owner: address,
       locations,
     };
-    console.log(`Querying GeoStream API with body: `, body);
-    console.log(`Querying GeoStream API with endpoint: `, GEOSTREAM_API);
-
     const response = await axios.post(GEOSTREAM_API, body).catch((error) => {
-      console.log(`Querying GeoStream API failed with error: ${error}.`);
-      console.log("Endpoint: ", GEOSTREAM_API);
-      console.log("Body: ", body);
+      console.log(error);
     });
-    console.log(`Query result.`, response);
+
     if (typeof response === "object" && response.data.result.data.length > 0) {
       setVerifiedLocations([...response.data.result.data]);
       setIsReadyToClaim(true);
