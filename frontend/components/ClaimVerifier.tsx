@@ -6,7 +6,6 @@ import { Airdrop } from "../types/Airdrop";
 import { Button, Spinner } from "@chakra-ui/react";
 import { Location } from "../types/Location";
 import { ConnectButton } from "./User/ConnectButton";
-import constants from "../config/constants";
 import { createSiweMessage, getLocationProof } from "../npm-package/";
 
 export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
@@ -83,14 +82,14 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
 
   function handleClaim() {
     if (!address) return;
-    let message = createSiweMessage(
+    let message = createSiweMessage({
       address,
-      airdrop.lat,
-      airdrop.long,
-      airdrop.max_distance,
-      airdrop.time_from,
-      airdrop.time_to
-    );
+      latitude: airdrop.lat,
+      longitude: airdrop.long,
+      distance: airdrop.max_distance,
+      from: airdrop.time_from,
+      to: airdrop.time_to,
+    });
     signMessage({ message });
   }
 
