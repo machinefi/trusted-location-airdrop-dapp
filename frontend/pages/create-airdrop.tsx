@@ -3,13 +3,15 @@ import {
   FormLabel,
   FormHelperText,
   Input,
+  Text,
+  Button,
+  Center,
+  Container,
+  Spinner,
 } from "@chakra-ui/react";
-import { Text, Button, Center, Container, Spinner } from "@chakra-ui/react";
-import { useMemo, useState } from "react";
-import { useContractRead } from "wagmi";
-import { iotexTestnet } from "wagmi/chains";
-import { LocationAirdrop } from "../config/contracts";
+import { useState } from "react";
 import { useAirdropCreate } from "../hooks/useAirdropCreate";
+import { useAirdropFee } from "../hooks/useAirdropFee";
 
 export default function Create() {
   const [formInput, setFormInput] = useState({
@@ -20,28 +22,17 @@ export default function Create() {
     time_to: 0,
     tokens_count: 0,
   });
-  const { lat, long, max_distance, time_from, time_to } = formInput;
+
   const [tokens, setTokens] = useState(0);
 
-  const { data: airdropFee }: { data: bigint | undefined } = useContractRead({
-    ...LocationAirdrop,
-    functionName: "calculateFee",
-    args: [tokens],
-    chainId: iotexTestnet.id,
-    enabled: !!tokens,
-  });
+  const airdropFee = useAirdropFee(tokens);
 
   const { createAirdrop, isLoading } = useAirdropCreate({
     ...formInput,
     airdropFee: Number(airdropFee?.toString()),
   });
 
-  const isValidInput = useMemo(() => {
-    // let isValid
-    // if statements update isValid
-    // return isValid
-    return true;
-  }, []);
+  const isValidInput = true;
 
   return (
     <Container>
