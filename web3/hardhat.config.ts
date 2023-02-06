@@ -13,7 +13,7 @@ const config: HardhatUserConfig = {
   networks: {
     testnet: {
       url: "https://babel-api.testnet.iotex.io",
-      accounts: [IOTEX_PRIVATE_KEY],
+      accounts: [`${IOTEX_PRIVATE_KEY}`],
     },
   },
 };

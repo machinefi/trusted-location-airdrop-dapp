@@ -5,7 +5,7 @@
       "chainId": "4690",
       "contracts": {
         "LocationAirdrop": {
-          "address": "0x5c3b137A2b5311d176374D0dFFcD0A598fB7d3F4",
+          "address": "0x4Af63044Cf3298d414570294D21c0711C7910f1c",
           "abi": [
             {
               "inputs": [
@@ -421,7 +421,7 @@
           ]
         },
         "LocationNFT": {
-          "address": "0xeC880EF184de36055B8a9b64A818E380b50343D8",
+          "address": "0x4c64b01DdD10362a6F7A5D44B8EB4b359ab8991c",
           "abi": [
             {
               "inputs": [],
