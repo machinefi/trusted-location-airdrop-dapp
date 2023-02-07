@@ -17,6 +17,7 @@ const getLocationProof = async (
   };
 
   try {
+    console.log("querying POL....")
     const response = await axios.post(constants.GEOSTREAM_API, body);
 
     if (response.status !== 200) {
@@ -24,7 +25,12 @@ const getLocationProof = async (
       return;
     }
 
+    console.log("getting a response....")
+    console.log("with response: ")
+    console.log(response?.data.result.data)
+    
     return response?.data.result.data;
+    
   } catch (error) {
     console.log(error);
   }

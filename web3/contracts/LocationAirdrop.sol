@@ -12,6 +12,7 @@ contract LocationAirdrop is Ownable, ReentrancyGuard {
     VerifierInterface public verifier;
     LocationNFT public NFT;
 
+
     address public feeReceiver;
     uint256 public baseFee;
     uint256 public feeCliff; // value after which creating more tokens will be free

@@ -1,12 +1,12 @@
 import { useSignMessage, useAccount } from "wagmi";
-import { useEffect, useState } from "react";
-import { useClaimDrop } from "../hooks/useClaimDrop";
+import { useState } from "react";
 import { VerifiedLocation } from "../types/VerifiedLocation";
 import { Airdrop } from "../types/Airdrop";
-import { Button, Spinner } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { Location } from "../types/Location";
 import { ConnectButton } from "./User/ConnectButton";
 import { createSiweMessage, getLocationProof } from "../npm-package/";
+import { ClaimButton } from "./ClaimButton";
 
 export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
   const { address, isConnected } = useAccount();
@@ -15,27 +15,6 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
     VerifiedLocation[]
   >([]);
   const [isReadyToClaim, setIsReadyToClaim] = useState(false);
-
-  const { isLoading, isSuccess, claimAirdrop } = useClaimDrop({
-    scaled_latitude: isReadyToClaim ? verifiedLocations[0].scaled_latitude : 0,
-    scaled_longitude: isReadyToClaim
-      ? verifiedLocations[0].scaled_longitude
-      : 0,
-    distance: isReadyToClaim ? verifiedLocations[0].distance : 0,
-    from: isReadyToClaim ? verifiedLocations[0].from : 0,
-    to: isReadyToClaim ? verifiedLocations[0].to : 0,
-    devicehash: isReadyToClaim ? verifiedLocations[0].devicehash : "",
-    signature: isReadyToClaim ? verifiedLocations[0].signature : "",
-    isReadyToClaim,
-  });
-
-  useEffect(() => {
-    if (isReadyToClaim) {
-      setTimeout(() => {
-        claimAirdrop?.();
-      }, 8000);
-    }
-  }, [isReadyToClaim]);
 
   const locations: Location[] = [
     {
@@ -80,7 +59,7 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
     }
   }
 
-  function handleClaim() {
+  function handleUnlock() {
     if (!address) return;
     let message = createSiweMessage({
       address,
@@ -97,14 +76,22 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
     return <ConnectButton />;
   }
 
+
+
+
   return (
-    <Button
-      mt={12}
-      disabled={isLoading || isSuccess}
-      onClick={handleClaim}
-    >
-      {isLoading ? <Spinner size="xs" /> : `Claim`}
-      {isSuccess && ` (Success)`}
-    </Button>
+
+    isReadyToClaim
+      ?
+      <ClaimButton isReadyToClaim={isReadyToClaim} verifiedLocations={verifiedLocations}
+        mt={12}
+      />
+      :
+      <Button
+        mt={12}
+        onClick={handleUnlock}
+      >
+        Unlock
+      </Button>
   );
 };
