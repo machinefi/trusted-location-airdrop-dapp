@@ -1,73 +1,54 @@
 import { useSignMessage, useAccount } from "wagmi";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { VerifiedLocation } from "../types/VerifiedLocation";
 import { Airdrop } from "../types/Airdrop";
 import { Button } from "@chakra-ui/react";
-import { Location } from "../types/Location";
 import { ConnectButton } from "./User/ConnectButton";
-import { createSiweMessage, getLocationProof } from "../npm-package/";
 import { ClaimButton } from "./ClaimButton";
+import { GeolocationVerifier } from "@nick-iotex/g3o";
 
 export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
+  const g3o = useRef<GeolocationVerifier>(new GeolocationVerifier());
   const { address, isConnected } = useAccount();
 
   const [verifiedLocations, setVerifiedLocations] = useState<
     VerifiedLocation[]
   >([]);
   const [isReadyToClaim, setIsReadyToClaim] = useState(false);
-
-  const locations: Location[] = [
-    {
-      scaled_latitude: Number(airdrop.lat),
-      scaled_longitude: Number(airdrop.long),
-      distance: Number(airdrop.max_distance),
-      from: airdrop.time_from,
-      to: airdrop.time_to,
-    },
-  ];
+  const [verificationUnsuccessful, setVerificationUnsuccessful] = useState(false);
 
   const { signMessage } = useSignMessage({
-    onSuccess: async (data, variables) => {
-      await queryPolAPI(
-        locations,
-        address as `0x${string}`,
-        data,
-        variables.message
-      );
+    onSuccess: async (data) => {
+      g3o.current.signature = data;
+      const verifiedLocations = await g3o.current.verifyLocation();
+      if (!!verifiedLocations && verifiedLocations.length > 0) {
+        setVerifiedLocations([...verifiedLocations]);
+        setIsReadyToClaim(true);
+      } else {
+        setVerifiedLocations([]);
+        setIsReadyToClaim(false);
+        setVerificationUnsuccessful(true);
+      }
     },
   });
 
-  async function queryPolAPI(
-    locations: Location[],
-    address: string,
-    signature: string,
-    message: string | Uint8Array
-  ) {
-    const verifiedLocations = await getLocationProof(
-      locations,
-      address,
-      signature,
-      message
-    );
-
-    if (!!verifiedLocations && verifiedLocations.length > 0) {
-      setVerifiedLocations([...verifiedLocations]);
-      setIsReadyToClaim(true);
-    } else {
-      setVerifiedLocations([]);
-      setIsReadyToClaim(false);
-    }
-  }
-
   function handleUnlock() {
     if (!address) return;
-    let message = createSiweMessage({
+    g3o.current.scaledLocationArea = {
+      scaled_latitude: Number(airdrop.lat),
+      scaled_longitude: Number(airdrop.long),
+      distance: Number(airdrop.max_distance),
+    };
+    console.log(airdrop.time_from, airdrop.time_to)
+    g3o.current.locationTime = {
+      from: Number(airdrop.time_from) * 1000,
+      to: Number(airdrop.time_to) * 1000,
+    };
+
+    const message = g3o.current.generateSiweMessage({
       address,
-      latitude: airdrop.lat,
-      longitude: airdrop.long,
-      distance: airdrop.max_distance,
-      from: airdrop.time_from,
-      to: airdrop.time_to,
+      domain: globalThis.location.host,
+      uri: globalThis.location.origin,
     });
     signMessage({ message });
   }
@@ -76,22 +57,15 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
     return <ConnectButton />;
   }
 
-
-
-
-  return (
-
-    isReadyToClaim
-      ?
-      <ClaimButton isReadyToClaim={isReadyToClaim} verifiedLocations={verifiedLocations}
-        mt={12}
-      />
-      :
-      <Button
-        mt={12}
-        onClick={handleUnlock}
-      >
-        Unlock
-      </Button>
+  return isReadyToClaim ? (
+    <ClaimButton
+      isReadyToClaim={isReadyToClaim}
+      verifiedLocations={verifiedLocations}
+      mt={12}
+    />
+  ) : (
+    <Button mt={12} onClick={handleUnlock}>
+      {verificationUnsuccessful ? "Verification Unsuccessful" : "Unlock"}
+    </Button>
   );
 };
