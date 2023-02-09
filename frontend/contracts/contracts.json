@@ -5,7 +5,7 @@
       "chainId": "4690",
       "contracts": {
         "LocationAirdrop": {
-          "address": "0x932aa5378B42cDf8423c6a374B4A881F82Db7bA8",
+          "address": "0x45d4572f270ca19C1226B010F6E5510d465cD57e",
           "abi": [
             {
               "inputs": [

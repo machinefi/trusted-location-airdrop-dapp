@@ -118,6 +118,7 @@ export default function Create() {
 
         <Button
           mb={12}
+          size={'xs'}
           disabled={isLoading || !createAirdrop || !isValidInput}
           onClick={() => createAirdrop?.()}
         >

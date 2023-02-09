@@ -35,14 +35,14 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
   function handleUnlock() {
     if (!address) return;
     g3o.current.scaledLocationArea = {
-      scaled_latitude: Number(airdrop.lat),
+      scaled_latitude: Number(airdrop.lat), 
       scaled_longitude: Number(airdrop.long),
       distance: Number(airdrop.max_distance),
     };
     console.log(airdrop.time_from, airdrop.time_to)
     g3o.current.locationTime = {
-      from: Number(airdrop.time_from) * 1000,
-      to: Number(airdrop.time_to) * 1000,
+      from: Number(airdrop.time_from),
+      to: Number(airdrop.time_to),
     };
 
     const message = g3o.current.generateSiweMessage({
@@ -62,9 +62,10 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
       isReadyToClaim={isReadyToClaim}
       verifiedLocations={verifiedLocations}
       mt={12}
+      size={'xs'}
     />
   ) : (
-    <Button mt={12} onClick={handleUnlock}>
+    <Button size={'xs'} mt={12} onClick={handleUnlock}>
       {verificationUnsuccessful ? "Verification Unsuccessful" : "Unlock"}
     </Button>
   );

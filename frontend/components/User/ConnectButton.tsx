@@ -7,7 +7,7 @@ export const ConnectButton = () => {
   return (
     <ButtonGroup>
       {connectors.map((connector) => (
-        <Button key={connector.id} onClick={() => connect({ connector })}>
+        <Button size={'xs'} key={connector.id} onClick={() => connect({ connector })}>
           Connect
         </Button>
       ))}

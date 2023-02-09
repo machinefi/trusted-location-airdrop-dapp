@@ -20,7 +20,7 @@ export const AirdropCard = ({
       <CardHeader>
         <Heading size="md" as="b">
           <Center>
-            Air Drop {hash?.substring(0, 5)}..{hash?.substring(hash.length - 2)}
+            Airdrop {hash?.substring(0, 5)}..{hash?.substring(hash.length - 2)}
           </Center>
         </Heading>
       </CardHeader>

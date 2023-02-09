@@ -3,6 +3,7 @@ import { LocationAirdrop } from "../config/contracts";
 import { useRouter } from "next/router";
 import { scaleCoordinatesUp } from "../utils/scaleCoordinates";
 import { millisecondsToSeconds } from "../utils/formatDate";
+import { Geolocation } from "@nick-iotex/g3o";
 
 type AirdropCreateProps = {
   lat: number;
@@ -28,8 +29,8 @@ export const useAirdropCreate = ({
     ...LocationAirdrop,
     functionName: "addAirDrop",
     args: [
-      scaleCoordinatesUp(Number(lat)),
-      scaleCoordinatesUp(Number(long)),
+      Geolocation.scaleCoordinatesUp(Number(lat)),
+      Geolocation.scaleCoordinatesUp(Number(long)),
       Number(max_distance),
       millisecondsToSeconds(time_from),
       millisecondsToSeconds(time_to),
