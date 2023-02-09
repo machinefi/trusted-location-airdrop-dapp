@@ -1,0 +1,32 @@
+{
+  "name": "@geostream/frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "^2.4.3",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@nick-iotex/g3o": "^1.0.3",
+    "axios": "^1.2.2",
+    "eslint": "8.29.0",
+    "eslint-config-next": "13.0.6",
+    "ethers": "^5.5.1",
+    "framer-motion": "^6.5.1",
+    "moment": "^2.29.4",
+    "next": "13.0.6",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "siwe": "^1.1.6",
+    "wagmi": "^0.9.6"
+  },
+  "devDependencies": {
+    "@types/node": "18.11.15",
+    "@types/react": "18.0.26"
+  }
+}

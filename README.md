@@ -1,34 +1,24 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Build a dApp based on trusted location with IoTeX
+
+This app uses the IoTeX Geo Location API and verifier contracts suite to allow users to create Airdrop based on trusted location. These Airdrops can be claimed only by those users who can prove their position within the specified area, within a certain time frame.  
+
+## Pre-requisites
+
+For users to prove their location they would have to use IoTeX native wallet, [ioPay](https://iopay.me/) and enable the [W3bstream](https://w3bstream.com/) geo-location module. A full tutorial on how to do this can be found in the IoTeX Developer Portal, [here](https://developers.iotex.io/posts/enable-trusted-geolocation-tutorial).
 
 ## Getting Started
 
-First, run the development server:
+Fork and clone this repository, at this point you'll find two directories: ***frontend*** and ***web3***.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+### /web3
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Use `npm install` to install all blockchain dependencies
+2. Create a new .env file and add your private key: e.g. `IOTEX_PRIVATE_KEY = <YOUR-PRIVATE-KEY>`
+3. Compile the contracts by running: `npm run compile`
+4. Test the contracts by runnning: `npm run test`
+5. Use this command to deploy to IoTeX Testnet: `npm run deploy:testnet`
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+### /frontend
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Use `npm install` to install all frontend dependencies
+2. Run `npm run dev` and open your browser at http://localhost:3000/
