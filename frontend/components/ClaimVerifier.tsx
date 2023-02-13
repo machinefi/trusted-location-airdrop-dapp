@@ -34,13 +34,10 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
 
   function handleUnlock() {
     if (!address) return;
-    g3o.current.scaledLocationArea = {
+    g3o.current.scaledLocation = {
       scaled_latitude: Number(airdrop.lat), 
       scaled_longitude: Number(airdrop.long),
       distance: Number(airdrop.max_distance),
-    };
-    console.log(airdrop.time_from, airdrop.time_to)
-    g3o.current.locationTime = {
       from: Number(airdrop.time_from),
       to: Number(airdrop.time_to),
     };

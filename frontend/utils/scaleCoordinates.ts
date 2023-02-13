@@ -1,11 +1,11 @@
+import { Geolocation } from "@nick-iotex/g3o";
+
 // format the coordinates received from the contract
-export const scaleCoordinatesDown = (coordInput: string) => {
-  const result = Number(coordInput) / Math.pow(10, 6);
-  return result;
-};
+export const scaleCoordinatesDown = (coordInput: number) => {
+  return Geolocation.scaleCoordinatesDown(coordInput);
+}
 
 // format the coordinates to send to the contract
 export const scaleCoordinatesUp = (coordInput: number) => {
-  const result = Math.round(coordInput * Math.pow(10, 6));
-  return result;
+  return Geolocation.scaleCoordinatesUp(coordInput);
 };
