@@ -8,7 +8,7 @@ import { ClaimButton } from "./ClaimButton";
 import { GeolocationVerifier } from "@nick-iotex/g3o";
 
 export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
-  const g3o = useRef<GeolocationVerifier>(new GeolocationVerifier());
+  const geolocation = useRef<GeolocationVerifier>(new GeolocationVerifier());
   const { address, isConnected } = useAccount();
 
   const [verifiedLocations, setVerifiedLocations] = useState<
@@ -19,8 +19,8 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
 
   const { signMessage } = useSignMessage({
     onSuccess: async (data) => {
-      g3o.current.signature = data;
-      const verifiedLocations = await g3o.current.verifyLocation();
+      geolocation.current.signature = data;
+      const verifiedLocations = await geolocation.current.verifyLocation();
       if (!!verifiedLocations && verifiedLocations.length > 0) {
         setVerifiedLocations([...verifiedLocations]);
         setIsReadyToClaim(true);
@@ -34,7 +34,7 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
 
   function handleUnlock() {
     if (!address) return;
-    g3o.current.scaledLocation = {
+    geolocation.current.scaledLocation = {
       scaled_latitude: Number(airdrop.lat), 
       scaled_longitude: Number(airdrop.long),
       distance: Number(airdrop.max_distance),
@@ -42,7 +42,7 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
       to: Number(airdrop.time_to),
     };
 
-    const message = g3o.current.generateSiweMessage({
+    const message = geolocation.current.generateSiweMessage({
       address,
       domain: globalThis.location.host,
       uri: globalThis.location.origin,
