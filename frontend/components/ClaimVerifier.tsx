@@ -5,7 +5,7 @@ import { Airdrop } from "../types/Airdrop";
 import { Button } from "@chakra-ui/react";
 import { ConnectButton } from "./User/ConnectButton";
 import { ClaimButton } from "./ClaimButton";
-import { GeolocationVerifier } from "@nick-iotex/g3o";
+import { GeolocationVerifier } from "@w3bstream/geolocation-light";
 
 export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
   const geolocation = useRef<GeolocationVerifier>(new GeolocationVerifier());
