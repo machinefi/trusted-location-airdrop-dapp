@@ -1,4 +1,4 @@
-import { Geolocation } from "@nick-iotex/g3o";
+import { Geolocation } from "@w3bstream/geolocation-light";
 
 // format the coordinates received from the contract
 export const scaleCoordinatesDown = (coordInput: number) => {

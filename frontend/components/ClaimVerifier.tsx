@@ -18,7 +18,7 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
   const [verificationUnsuccessful, setVerificationUnsuccessful] = useState(false);
 
   async function sendQuery() {
-    await geolocation.current.verifyLocation();
+    const verifiedLocations = await geolocation.current.verifyLocation();
     if (!!verifiedLocations && verifiedLocations.length > 0) {
       setVerifiedLocations([...verifiedLocations]);
       setIsReadyToClaim(true);
