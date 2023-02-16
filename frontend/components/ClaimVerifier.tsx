@@ -17,25 +17,29 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
   const [isReadyToClaim, setIsReadyToClaim] = useState(false);
   const [verificationUnsuccessful, setVerificationUnsuccessful] = useState(false);
 
+  async function sendQuery() {
+    await geolocation.current.verifyLocation();
+    if (!!verifiedLocations && verifiedLocations.length > 0) {
+      setVerifiedLocations([...verifiedLocations]);
+      setIsReadyToClaim(true);
+    } else {
+      setVerifiedLocations([]);
+      setIsReadyToClaim(false);
+      setVerificationUnsuccessful(true);
+    }
+  }
+
   const { signMessage } = useSignMessage({
-    onSuccess: async (data) => {
+    onSuccess: (data) => {
       geolocation.current.signature = data;
-      const verifiedLocations = await geolocation.current.verifyLocation();
-      if (!!verifiedLocations && verifiedLocations.length > 0) {
-        setVerifiedLocations([...verifiedLocations]);
-        setIsReadyToClaim(true);
-      } else {
-        setVerifiedLocations([]);
-        setIsReadyToClaim(false);
-        setVerificationUnsuccessful(true);
-      }
-    },
+      sendQuery()
+    }
   });
 
   function handleUnlock() {
     if (!address) return;
     geolocation.current.scaledLocation = {
-      scaled_latitude: Number(airdrop.lat), 
+      scaled_latitude: Number(airdrop.lat),
       scaled_longitude: Number(airdrop.long),
       distance: Number(airdrop.max_distance),
       from: Number(airdrop.time_from),
