@@ -3,7 +3,7 @@ import { LocationAirdrop } from "../config/contracts";
 import { useRouter } from "next/router";
 import { scaleCoordinatesUp } from "../utils/scaleCoordinates";
 import { millisecondsToSeconds } from "../utils/formatDate";
-import { Geolocation } from "@nick-iotex/g3o";
+import { Geolocation } from "@w3bstream/geolocation-light";
 
 type AirdropCreateProps = {
   lat: number;
