@@ -67,7 +67,7 @@ export const ClaimVerifier = ({ airdrop }: { airdrop: Airdrop }) => {
     />
   ) : (
     <Button size={'xs'} mt={12} onClick={handleUnlock}>
-      {verificationUnsuccessful ? "Verification Unsuccessful" : "Unlock"}
+      {verificationUnsuccessful ? "Proof Not Found" : "Get Proof"}
     </Button>
   );
 };

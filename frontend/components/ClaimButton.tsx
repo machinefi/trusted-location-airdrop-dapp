@@ -41,7 +41,7 @@ export const ClaimButton = ({isReadyToClaim, verifiedLocations, ...rest} : Claim
             onClick={handleClaim}
             {...rest}
         >
-            {isLoading ? <Spinner size="xs" /> : `Claim`}
+            {isLoading ? <Spinner size="xs" /> : `Claim Your NFT`}
         </Button>
     )
 }
