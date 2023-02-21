@@ -1,5 +1,5 @@
 {
-  "name": "@geostream/harhat",
+  "name": "@geolocation/hardhat",
   "version": "1.0.0",
   "description": "hardhat project for geo app",
   "main": "index.js",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GiupiDeLuca/geo_next.git"
+    "url": "git+https://github.com/machinefi/trusted-location-airdrop-dapp.git"
   },
   "keywords": [
     "geolocation",
@@ -20,16 +20,16 @@
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/GiupiDeLuca/geo_next/issues"
+    "url": "https://github.com/machinefi/trusted-location-airdrop-dapp/issues"
   },
-  "homepage": "https://github.com/GiupiDeLuca/geo_next#readme",
+  "homepage": "https://github.com/machinefi/trusted-location-airdrop-dapp#readme",
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^2.0.1",
-    "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers@^0.3.0-beta.13",
     "@openzeppelin/contracts": "^4.8.0",
     "dotenv": "^16.0.3",
-    "ethers": "^5.7.2",
     "hardhat": "^2.12.6",
-    "hardhat-deploy": "^0.11.22"
+    "hardhat-deploy": "^0.11.23"
+  },
+  "dependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^2.0.1"
   }
 }

@@ -6,10 +6,10 @@ import { scaleCoordinatesDown } from "../../utils/scaleCoordinates";
 export const AirdropInfo = ({ airdrop }: { airdrop: Airdrop }) => (
   <Box>
     <Text pt="2" fontSize="sm" textTransform="uppercase">
-      Latitude: {airdrop ? scaleCoordinatesDown(airdrop.lat) : "loading"}
+      Latitude: {airdrop ? scaleCoordinatesDown(Number(airdrop.lat)) : "loading"}
     </Text>
     <Text pt="2" fontSize="sm" textTransform="uppercase">
-      Longitude: {airdrop ? scaleCoordinatesDown(airdrop.long) : "loading"}
+      Longitude: {airdrop ? scaleCoordinatesDown(Number(airdrop.long)) : "loading"}
     </Text>
     <Text pt="2" fontSize="sm" textTransform="uppercase">
       Distance: {airdrop ? `${airdrop.max_distance} meters` : `loading`}
